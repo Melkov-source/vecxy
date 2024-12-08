@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Melkov-source/vecxy#readme",
   "devDependencies": {
     "copyfiles": "^2.4.1",
+    "http-server": "^14.1.1",
     "typescript": "^5.7.2"
   }
 }

@@ -10,6 +10,10 @@ async function loadShader(url: string): Promise<string> {
 
 export class Application {
     public async runAsync(): Promise<void> {
+        window.onresize = async (event) => {
+            await this.runAsync();
+        }
+
         const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 
         const webgl = canvas.getContext("webgl");
