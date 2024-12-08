@@ -1,2 +1,5 @@
-const message: string = "Hello, World!";
-document.body.textContent = message;
+import {Application} from "./application";
+
+const application = new Application();
+
+application.run();
