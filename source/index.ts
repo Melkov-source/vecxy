@@ -1,5 +1,7 @@
 import {Application} from "./application";
 
-const application = new Application();
+(async () => {
+    const application = new Application();
 
-application.run();
+    await application.runAsync();
+})()

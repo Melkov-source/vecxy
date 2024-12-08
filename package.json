@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-	"build": "tsc",
-	"start": "tsc && start index.html"
+    "build": "tsc",
+    "start": "tsc && start index.html"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Melkov-source/vecxy#readme",
   "devDependencies": {
+    "copyfiles": "^2.4.1",
     "typescript": "^5.7.2"
   }
 }

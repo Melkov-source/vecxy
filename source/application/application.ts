@@ -1,5 +1,15 @@
+async function loadShader(url: string): Promise<string> {
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+        throw new Error(`Не удалось загрузить шейдер: ${url}`);
+    }
+
+    return await response.text();
+}
+
 export class Application {
-    public run(): void {
+    public async runAsync(): Promise<void> {
         const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 
         const webgl = canvas.getContext("webgl");
@@ -17,20 +27,6 @@ export class Application {
             -0.5, -0.5,  // Вершина 2
             0.5, -0.5   // Вершина 3
         ]);
-
-        const vertexShaderSource = `
-            attribute vec2 position;
-            
-            void main(void) {
-                gl_Position = vec4(position, 0.0, 1.0);
-            }
-        `;
-
-        const fragmentShaderSource = `
-            void main(void) {
-                gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-            }
-        `;
 
         // Явное указание типов для source и type
         const compileShader = (source: string, type: GLenum): WebGLShader | undefined => {
@@ -52,8 +48,11 @@ export class Application {
             return shader;
         }
 
-        const vertexShader = compileShader(vertexShaderSource, webgl.VERTEX_SHADER)!;
-        const fragmentShader = compileShader(fragmentShaderSource, webgl.FRAGMENT_SHADER)!;
+        const vertex_shader_source = await loadShader("./assets/shaders/vertex_shader.glsl");
+        const fragment_shader_source = await loadShader("./assets/shaders/fragment_shader.glsl");
+
+        const vertexShader = compileShader(vertex_shader_source, webgl.VERTEX_SHADER)!;
+        const fragmentShader = compileShader(fragment_shader_source, webgl.FRAGMENT_SHADER)!;
 
         const shaderProgram = webgl.createProgram();
 
