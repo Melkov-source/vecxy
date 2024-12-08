@@ -1,0 +1,24 @@
+{
+  "name": "vecxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+	"build": "tsc",
+	"start": "tsc && start index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Melkov-source/vecxy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Melkov-source/vecxy/issues"
+  },
+  "homepage": "https://github.com/Melkov-source/vecxy#readme",
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
