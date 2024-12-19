@@ -14,18 +14,6 @@ export class Application {
             await this.runAsync();
         }
 
-        const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
-
-        const webgl = canvas.getContext("webgl");
-
-        if (!webgl) {
-            console.error("WebGL не поддерживается");
-            return;
-        }
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
         const vertices = new Float32Array([
             0.0, 0.5,  // Вершина 1
             -0.5, -0.5,  // Вершина 2
