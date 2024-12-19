@@ -1,4 +1,4 @@
-import {WebGL} from "./webgl";
+import {WebGL} from "./webgl.js";
 
 const CANVAS_NODE_TYPE: string = "CANVAS";
 const WEBGL_CONTEXT: string = "webgl";

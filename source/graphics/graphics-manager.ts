@@ -1,5 +1,5 @@
-import {Canvas} from "./canvas";
-import {WebGL} from "./webgl";
+import {Canvas} from "./canvas.js";
+import {WebGL} from "./webgl.js";
 
 export class GraphicsManager {
     private readonly _canvas: Canvas;
