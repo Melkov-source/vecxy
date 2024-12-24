@@ -1,26 +1,17 @@
 {
   "name": "vecxy",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "2d game engine for HTML5 games",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "files": ["dist", "types"],
   "scripts": {
-    "build": "tsc",
-    "start": "tsc && start index.html"
+    "build": "tsc"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Melkov-source/vecxy.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Melkov-source/vecxy/issues"
-  },
-  "homepage": "https://github.com/Melkov-source/vecxy#readme",
+  "author": "melkov",
   "devDependencies": {
-    "copyfiles": "^2.4.1",
-    "http-server": "^14.1.1",
+    "@types/node": "^22.10.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   }
 }

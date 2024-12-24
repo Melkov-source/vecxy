@@ -1,5 +1,3 @@
-import {WebGL} from "./webgl.js";
-
 const CANVAS_NODE_TYPE: string = "CANVAS";
 const WEBGL_CONTEXT: string = "webgl";
 
@@ -12,7 +10,7 @@ export class Canvas {
     private readonly _htmlCanvasElement: HTMLCanvasElement;
 
     public constructor(id: string, options: ICanvasOptions) {
-        const element: HTMLElement = document.getElementById(id);
+        const element: HTMLElement | null = document.getElementById(id);
 
         if (!element) {
             throw new Error(`Not found canvas in DOM by id: ${id}`)
@@ -28,16 +26,14 @@ export class Canvas {
         this.setHeight(options.height);
     }
 
-    public createWebGL(): WebGL {
+    public getWebGL(): WebGLRenderingContext {
         const webgl_rendering_context: WebGLRenderingContext | null = this.getWebGL__RenderingContext();
 
         if (!webgl_rendering_context) {
             throw new Error("WebGL not supported in current browser!");
         }
 
-        const webgl: WebGL = new WebGL(webgl_rendering_context);
-
-        return webgl;
+        return webgl_rendering_context;
     }
 
     public setWidth(width: number): void {

@@ -1,4 +1,3 @@
-export * from './assets'
 export * from './graphics'
 export * from './application'
 
