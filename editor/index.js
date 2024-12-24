@@ -11,9 +11,13 @@ function createWindow () {
   })
 
   win.loadFile('index.html')
+
+  win.menuBarVisible = true;
 }
 
 app.whenReady().then(() => {
+  createWindow()
+  createWindow()
   createWindow()
 
   app.on('activate', () => {
