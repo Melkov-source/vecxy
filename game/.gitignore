@@ -1,0 +1,30 @@
+# Node modules
+/node_modules/
+
+# Output directory for TypeScript and Webpack
+/dist/
+/build/
+
+# TypeScript config files (compiled .ts to .js)
+*.js
+*.d.ts
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor-specific files
+/.idea/
+/.vscode/
+
+# Optional: If you are using environment variables
+.env
+
+# Webpack and other temporary files
+/.webpack/
+/.cache/
