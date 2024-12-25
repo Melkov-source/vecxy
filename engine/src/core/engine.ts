@@ -1,7 +1,11 @@
+import {WebGL} from "../graphics/webgl.js"
+
 export class Engine {
-    public start(): void {
-        console.log("start");
-        console.log("demo");
-        console.log("adad");
+    private declare _webgl: WebGL;
+
+    public initialize(): void {
+        this._webgl = new WebGL();
+
+        this._webgl.initialize();
     }
 }

@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "types": "types/index.d.ts",
   "files": ["dist", "types"],
+  "type": "module",
   "scripts": {
     "build": "tsc"
   },
@@ -13,5 +14,10 @@
     "@types/node": "^22.10.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
   }
 }
