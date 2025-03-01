@@ -27,6 +27,10 @@ export default {
             targets: [
                 // Копируем все ресурсы из папки assets
                 { src: 'assets/**/*', dest: 'build/assets' },
+
+                // Копируем внутренние ресурсы движка
+                { src: 'node_modules/vecxy/internal/*', dest: 'build/internal' },
+
                 // Копируем HTML и CSS
                 { src: 'template/index.html', dest: 'build' },
                 { src: 'template/styles.css', dest: 'build' },

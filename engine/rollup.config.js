@@ -1,4 +1,6 @@
 import typescript from "@rollup/plugin-typescript";
+import del from 'rollup-plugin-delete'; // Добавьте этот импорт
+import copy from 'rollup-plugin-copy';
 
 export default {
     input: "src/vecxy.ts",          // Главный файл для сборки
@@ -17,6 +19,14 @@ export default {
     plugins: [
         typescript({                    // Используем плагин TypeScript
             tsconfig: "./tsconfig.json"    // Указываем конфиг TypeScript
-        })
+        }),
+
+        del({ targets: 'dist/*' }),  // Удаляем старые файлы в папке dist
+
+        copy({
+            targets: [
+                { src: 'internal/*', dest: 'dist/internal' },  // Копируем файлы
+            ]
+        }),
     ]
 };

@@ -1,5 +1,7 @@
+import { AssetsManager } from "./assets/assets.manager";
+
 export class Engine {
-    public start(): void {
+    public async start(): Promise<void> {
         // Получаем элемент canvas
         const canvas = document.getElementById('#game-canvas') as HTMLCanvasElement;
         
@@ -17,20 +19,6 @@ export class Engine {
            -0.5, -0.5, 0.0,  // Левая вершина
             0.5, -0.5, 0.0   // Правая вершина
         ]);
-
-        // Шейдеры
-        const vertexShaderSource = `
-            attribute vec3 a_position;
-            void main() {
-                gl_Position = vec4(a_position, 1.0);
-            }
-        `;
-        
-        const fragmentShaderSource = `
-            void main() {
-                gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Красный цвет
-            }
-        `;
         
         // Функция для создания шейдеров
         const createShader = (type: number, source: string): WebGLShader => {
@@ -49,10 +37,13 @@ export class Engine {
             
             return shader;
         }
+
+        const shader_vertext_asset = await AssetsManager.loadShaderAsync('./internal/shaders/triange.vert.glsl');
+        const shader_fragment_asset = await AssetsManager.loadShaderAsync('./internal/shaders/triange.frag.glsl');
         
         // Создаем шейдеры
-        const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
-        const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+        const vertexShader = createShader(gl.VERTEX_SHADER, shader_vertext_asset?.read() ?? "");
+        const fragmentShader = createShader(gl.FRAGMENT_SHADER, shader_fragment_asset?.read() ?? "");
         
         // Создаем программу шейдеров
         const shaderProgram = gl.createProgram();
