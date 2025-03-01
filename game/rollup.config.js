@@ -3,9 +3,10 @@ import copy from 'rollup-plugin-copy';  // Плагин для копирова�
 import del from 'rollup-plugin-delete'; // Плагин для удаления файлов и папок
 import resolve from '@rollup/plugin-node-resolve'; // Для поиска локальных модулей
 import commonjs from '@rollup/plugin-commonjs'; // Для обработки CommonJS модулей
+import sourcemaps from 'rollup-plugin-sourcemaps'; // Плагин для работы с source maps
 
 export default {
-    input: 'src/game.ts',  // Точка входа для игрового проекта
+    input: ['src/game.ts'],  // Точка входа для игрового проекта
     output: [
         {
             file: 'build/game.js',  // Скомпилированный файл игры
@@ -35,14 +36,20 @@ export default {
                 { src: 'template/index.html', dest: 'build' },
                 { src: 'template/styles.css', dest: 'build' },
                 { src: 'template/favicon.ico', dest: 'build' },
+
+                //Sources
+                { src: 'src/*', dest: 'build/src' },
+                { src: 'node_modules/vecxy/src/*', dest: 'build/engine/src' },
             ]
         }),
 
         resolve({
-            preferBuiltins: true,
+            preferBuiltins: true
         }),
 
         commonjs(),
+
+        sourcemaps(),
     ],
     external: [], // Движок будет упакован, не нужно исключать его
 };

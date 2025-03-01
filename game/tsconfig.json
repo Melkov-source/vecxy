@@ -9,7 +9,7 @@
         "esModuleInterop": true, // Для работы с CommonJS модулями
         "skipLibCheck": true, // Пропускаем проверку библиотек (ускоряет компиляцию)
         "allowJs": true, // Разрешаем использование JavaScript файлов в проекте
-        "sourceMap": true // Генерация source maps для отладки
+        "sourceMap": true
     },
     "include": [
         "src/**/*.ts" // Включаем все файлы .ts из папки src

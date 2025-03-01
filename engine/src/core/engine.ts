@@ -3,7 +3,7 @@ import { AssetsManager } from "./assets/assets.manager";
 export class Engine {
     public async start(): Promise<void> {
         // Получаем элемент canvas
-        const canvas = document.getElementById('#game-canvas') as HTMLCanvasElement;
+        const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
         
         // Инициализация контекста WebGL
         const gl = canvas.getContext('webgl');
