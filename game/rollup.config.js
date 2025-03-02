@@ -37,6 +37,8 @@ export default {
                 { src: 'template/styles.css', dest: 'build' },
                 { src: 'template/favicon.ico', dest: 'build' },
 
+                { src: 'template/libs/*', dest: 'build/libs' },
+
                 //Sources
                 { src: 'src/*', dest: 'build/src' },
                 { src: 'node_modules/vecxy/src/*', dest: 'build/engine/src' },
