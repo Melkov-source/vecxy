@@ -34,9 +34,9 @@ export default {
 
                 // Копируем HTML и CSS
                 { src: 'template/index.html', dest: 'build' },
-                { src: 'template/styles.css', dest: 'build' },
                 { src: 'template/favicon.ico', dest: 'build' },
 
+                { src: 'template/styles/*', dest: 'build/styles' },
                 { src: 'template/libs/*', dest: 'build/libs' },
 
                 //Sources
