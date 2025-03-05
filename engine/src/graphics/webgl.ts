@@ -22,5 +22,28 @@ export class WebGL {
         this.ctx = rendering_context as WebGLRenderingContext;
 
         (document as any).webgl = this.ctx;
+
+        this.resizeCanvas();
+    }
+
+    public static resizeCanvas() {
+        const rect = this.canvas.getBoundingClientRect();
+
+        const MAX_DPR = 2;
+
+        const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+
+        const display_width = Math.round(rect.width * dpr);
+        const display_height = Math.round(rect.height * dpr);
+
+        const need_resize = this.canvas.width !== display_width || this.canvas.height !== display_height;
+
+        if (need_resize) {
+            this.canvas.width = display_width;
+            this.canvas.height = display_height;
+        }
+
+        this.ctx.viewport(0, 0, this.canvas.width, this.canvas.height);
+        return need_resize;
     }
 }

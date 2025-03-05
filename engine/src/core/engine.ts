@@ -1,3 +1,4 @@
+import { mat4 } from "gl-matrix";
 import { Renderer } from "../graphics/renderer";
 import { WebGL } from "../graphics/webgl";
 
@@ -11,6 +12,8 @@ export class Engine {
     }
 
     public async start(): Promise<void> {
+        const matrix = mat4.create();
+
         await this._renderer.render();
     }
 }

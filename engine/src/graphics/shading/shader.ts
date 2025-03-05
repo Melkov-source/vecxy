@@ -64,7 +64,9 @@ export class Shader {
 
         webgl.linkProgram(program);
 
-        if (!webgl.getProgramParameter(program, webgl.LINK_STATUS)) {
+        const success = webgl.getProgramParameter(program, webgl.LINK_STATUS);
+
+        if (!success) {
             console.error('Error linking program:', webgl.getProgramInfoLog(program));
 
             webgl.deleteProgram(program);
@@ -96,14 +98,17 @@ export class Shader {
         webgl.shaderSource(shader, source);
         webgl.compileShader(shader);
 
-        if (!webgl.getShaderParameter(shader, webgl.COMPILE_STATUS)) {
+        const success = webgl.getShaderParameter(shader, webgl.COMPILE_STATUS);
+
+        if (!success) {
             webgl.deleteShader(shader);
 
             console.error(`Shader error compilation: ${webgl.getShaderInfoLog(shader)}`);
-
+    
             return null;
         }
 
+        
         return shader;
     }
 }
