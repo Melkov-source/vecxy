@@ -45,6 +45,14 @@ export class Shader {
         return WebGL.ctx.getAttribLocation(this._program, name);
     }
 
+    public getUniformLocation(name: string): WebGLUniformLocation | null {
+        if (!this._program) {
+            return null;
+        }
+
+        return WebGL.ctx.getUniformLocation(this._program, name);
+    }
+
     private createProgram(): WebGLProgram | null {
         if(!this._vertext_shader || !this._fragment_shader) {
             return null;
