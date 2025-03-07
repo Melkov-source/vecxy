@@ -1,19 +1,27 @@
-import { mat4 } from "gl-matrix";
-import { Renderer } from "../graphics/renderer";
+import { Renderer } from "../graphics/renderer/renderer";
 import { WebGL } from "../graphics/webgl";
 
 export class Engine {
     private readonly _renderer: Renderer;
 
     public constructor() {
-        WebGL.init('game-canvas');
-
         this._renderer = new Renderer();
     }
 
-    public async start(): Promise<void> {
-        const matrix = mat4.create();
+    public run(): void {
+        window.onload = this.init.bind(this);
+    }
 
-        await this._renderer.render();
+
+    private init(): void {
+        WebGL.init('game-canvas');
+
+        this.loop();
+    }
+
+    private loop(): void {
+        this._renderer.render();
+
+        requestAnimationFrame(this.loop.bind(this));
     }
 }
