@@ -4,7 +4,7 @@ export class WebGL {
     public static declare canvas: HTMLCanvasElement;
     public static declare ctx: WebGLRenderingContext;
 
-    public static init(element_id: string) {
+    public static init(element_id: string): void {
         const element = document.getElementById(element_id);
 
         if (!element) {
@@ -26,7 +26,7 @@ export class WebGL {
         this.resizeCanvas();
     }
 
-    public static resizeCanvas() {
+    public static resizeCanvas(): void {
         const rect = this.canvas.getBoundingClientRect();
 
         const MAX_DPR = 2;
@@ -38,12 +38,13 @@ export class WebGL {
 
         const need_resize = this.canvas.width !== display_width || this.canvas.height !== display_height;
 
-        if (need_resize) {
-            this.canvas.width = display_width;
-            this.canvas.height = display_height;
+        if (!need_resize) {
+            return
         }
 
+        this.canvas.width = display_width;
+        this.canvas.height = display_height;
+
         this.ctx.viewport(0, 0, this.canvas.width, this.canvas.height);
-        return need_resize;
     }
 }

@@ -20,6 +20,8 @@ export class Engine {
     }
 
     private loop(): void {
+        WebGL.resizeCanvas();
+        
         this._renderer.render();
 
         requestAnimationFrame(this.loop.bind(this));
