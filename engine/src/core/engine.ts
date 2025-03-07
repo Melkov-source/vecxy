@@ -1,5 +1,5 @@
 import { Renderer } from "../graphics/renderer/renderer";
-import { WebGL } from "../graphics/webgl";
+import { WebGL } from "../graphics/core/webgl";
 
 export class Engine {
     private readonly _renderer: Renderer;
@@ -21,7 +21,7 @@ export class Engine {
 
     private loop(): void {
         WebGL.resizeCanvas();
-        
+
         this._renderer.render();
 
         requestAnimationFrame(this.loop.bind(this));

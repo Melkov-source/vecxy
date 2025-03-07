@@ -1,6 +1,6 @@
 import { AssetsManager } from "../../core/assets/assets.manager";
 import { Shader } from "../core/shader";
-import { WebGL } from "../webgl";
+import { WebGL } from "../core/webgl";
 
 export class Renderer {
     public render(): void {

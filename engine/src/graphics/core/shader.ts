@@ -1,4 +1,4 @@
-import { WebGL } from "../webgl";
+import { WebGL } from "./webgl";
 
 enum SHADER_TYPE {
     VERTEX_SHADER = 'VERTEX_SHADER',
