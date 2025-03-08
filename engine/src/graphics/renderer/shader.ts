@@ -109,9 +109,9 @@ export class Shader {
         const success = webgl.getShaderParameter(shader, webgl.COMPILE_STATUS);
 
         if (!success) {
-            webgl.deleteShader(shader);
-
             console.error(`Shader error compilation: ${webgl.getShaderInfoLog(shader)}`);
+
+            webgl.deleteShader(shader);
     
             return null;
         }

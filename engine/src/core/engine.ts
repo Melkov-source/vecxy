@@ -1,5 +1,5 @@
 import { Renderer } from "../graphics/renderer/renderer";
-import { WebGL } from "../graphics/core/webgl";
+import { WebGL } from "../graphics/renderer/webgl";
 
 export class Engine {
     private readonly _renderer: Renderer;

@@ -1,6 +1,6 @@
 import { AssetsManager } from "../../core/assets/assets.manager";
-import { Shader } from "../core/shader";
-import { WebGL } from "../core/webgl";
+import { Shader } from "./shader";
+import { WebGL } from "./webgl";
 
 export class Renderer {
     public render(): void {
@@ -15,15 +15,15 @@ export class Renderer {
             400, 400
         ]);
 
-        vertices = vertices.map(v => v + 50);
+        vertices = Float32Array.from(vertices, v => v + 50);
 
         const colors = new Float32Array([
+            1, 0.5, 1,
             1, 1, 1,
+            1, 0.5, 1,
             1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1
+            0.5, 1, 0.5,
+            1, 0.5, 1
         ]);
 
         const positions_buffer = webgl.createBuffer();
@@ -35,15 +35,16 @@ export class Renderer {
         webgl.bufferData(webgl.ARRAY_BUFFER, colors, webgl.STATIC_DRAW);
 
         const shader = new Shader(
-            `
+            `#version 300 es
+
                 precision mediump float;
 
-                attribute vec2 a_position;
-                attribute vec3 a_color;
+                in vec2 a_position;
+                in vec3 a_color;
 
                 uniform vec2 u_resolution;
 
-                varying vec3 v_color;
+                out vec3 v_color;
 
                 void main() {
                     v_color = a_color;
@@ -54,16 +55,19 @@ export class Renderer {
 
                     vec2 clip_space = (zero_to_two - 1.0) * vec2(1, -1);
 
-                    gl_Position = vec4(clip_space, 0, 1);
+                    gl_Position = vec4(clip_space, 0.0, 1.0);
                 }
             `,
-            `
+            `#version 300 es
+
                 precision mediump float;
 
-                varying vec3 v_color;
+                in vec3 v_color;
+
+                out vec4 fragColor;
 
                 void main() {
-                    gl_FragColor = vec4(v_color, 1.0);
+                    fragColor = vec4(v_color, 1.0);
                 }
             `
         );

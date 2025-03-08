@@ -1,8 +1,9 @@
 const WEBGL_CONTEXT: string = 'webgl';
+const WEBGL2_CONTEXT: string = 'webgl2';
 
 export class WebGL {
     public static declare canvas: HTMLCanvasElement;
-    public static declare ctx: WebGLRenderingContext;
+    public static declare ctx: WebGLRenderingContext | WebGLRenderingContext;
 
     public static init(element_id: string): void {
         const element = document.getElementById(element_id);
@@ -13,10 +14,18 @@ export class WebGL {
 
         this.canvas = element as HTMLCanvasElement;
 
-        const rendering_context = this.canvas.getContext(WEBGL_CONTEXT);
+        const rendering_context = this.canvas.getContext(WEBGL2_CONTEXT) as WebGL2RenderingContext;
 
         if (!rendering_context) {
-            throw new Error(`[WebGL] Not supported by your browser!`);
+            // Если WebGL 2.0 не доступен, пробуем WebGL 1.0
+            console.warn('[WebGL] WebGL 2.0 not supported, falling back to WebGL 1.0');
+            this.ctx = this.canvas.getContext(WEBGL_CONTEXT) as WebGLRenderingContext;
+            if (!this.ctx) {
+                throw new Error(`[WebGL] WebGL 1.0 is not supported by your browser!`);
+            }
+        } else {
+            // Если WebGL 2.0 доступен, используем его
+            this.ctx = rendering_context;
         }
 
         this.ctx = rendering_context as WebGLRenderingContext;
