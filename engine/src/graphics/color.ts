@@ -20,8 +20,8 @@ export class Color {
     public r0255(): number { return this._r; }
     public r01(): number { return this._r / 255; }
 
-    public g0255(): number { return this._b; }
-    public g01(): number { return this._b / 255; }
+    public g0255(): number { return this._g; }
+    public g01(): number { return this._g / 255; }
 
     public b0255(): number { return this._b; }
     public b01(): number { return this._b / 255; }
