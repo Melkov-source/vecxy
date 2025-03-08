@@ -1,4 +1,3 @@
-import { AssetsManager } from "../../core/assets/assets.manager";
 import { Shader } from "./shader";
 import { WebGL } from "./webgl";
 
