@@ -88,7 +88,6 @@ export class Renderer {
 
         webgl.uniform2f(resolution_uniform_location, webgl.canvas.width, webgl.canvas.height);
 
-
         webgl.clearColor(0.0, 0.0, 0.0, 1.0);
         webgl.clear(webgl.COLOR_BUFFER_BIT);
         webgl.drawArrays(webgl.TRIANGLES, 0, 6);

@@ -1,9 +1,5 @@
 import { WebGL } from "./webgl";
-
-enum SHADER_TYPE {
-    VERTEX_SHADER = 'VERTEX_SHADER',
-    FRAGMENT_SHADER = 'FRAGMENT_SHADER'
-}
+import { WEBGL_SHADER, WebGLUtils } from "./webgl.utils";
 
 export class Shader {
     private _vertex_gls: string;
@@ -18,8 +14,8 @@ export class Shader {
         this._vertex_gls = vertex_glsl;
         this._fragment_gls = fragment_gls;
 
-        this._vertext_shader = this.createShader(SHADER_TYPE.VERTEX_SHADER, vertex_glsl);
-        this._fragment_shader = this.createShader(SHADER_TYPE.FRAGMENT_SHADER, fragment_gls);
+        this._vertext_shader = this.createShader(WEBGL_SHADER.VERTEX_SHADER, vertex_glsl);
+        this._fragment_shader = this.createShader(WEBGL_SHADER.FRAGMENT_SHADER, fragment_gls);
 
         if (!this._vertext_shader || !this._fragment_shader) {
             console.error(`No created Shader!`);
@@ -84,19 +80,14 @@ export class Shader {
         return program;
     }
 
-    private createShader(type: SHADER_TYPE, source: string): WebGLShader | null {
+    private createShader(type: WEBGL_SHADER, source: string): WebGLShader | null {
         const webgl = WebGL.ctx;
 
         let shader: WebGLShader | null = null;
 
-        switch (type) {
-            case SHADER_TYPE.VERTEX_SHADER:
-                shader = webgl.createShader(webgl.VERTEX_SHADER);
-                break;
-            case SHADER_TYPE.FRAGMENT_SHADER:
-                shader = webgl.createShader(webgl.FRAGMENT_SHADER);
-                break;
-        }
+        const gl_enum = WebGLUtils.toShaderEnum(type);
+
+        shader = webgl.createShader(gl_enum);
 
         if (!shader) {
             console.error(`Not created shader type: ${type}`)
