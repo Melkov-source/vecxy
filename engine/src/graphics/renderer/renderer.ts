@@ -1,3 +1,4 @@
+import { Color } from "../color";
 import { ShaderWebGL } from "./shader.webgl";
 import { WebGL } from "./webgl";
 
@@ -16,14 +17,18 @@ export class Renderer {
 
         vertices = Float32Array.from(vertices, v => v + 50);
 
+        const color = Color.fromHex('#66CDAA');
+
+        const colors_array = color.toArray();
+
         const colors = new Uint8Array([
-            127, 255, 127,
-            255, 255, 255,
-            255, 255, 255,
-            255, 255, 255,
-            255, 255, 255,
-            127, 255, 127
-        ]);
+            ...colors_array,
+            ...colors_array,
+            ...colors_array,
+            ...colors_array,
+            ...colors_array,
+            ...colors_array,
+        ])
 
         const positions_buffer = webgl.createBuffer();
         webgl.bindBuffer(webgl.ARRAY_BUFFER, positions_buffer);
@@ -39,11 +44,11 @@ export class Renderer {
                 precision mediump float;
 
                 in vec2 a_position;
-                in vec3 a_color;
+                in vec4 a_color;
 
                 uniform vec2 u_resolution;
 
-                out vec3 v_color;
+                out vec4 v_color;
 
                 void main() {
                     v_color = a_color;
@@ -61,13 +66,18 @@ export class Renderer {
 
                 precision mediump float;
 
-                in vec3 v_color;
+                in vec4 v_color;
 
                 out vec4 fragColor;
 
                 void main() {
-                    vec3 n_color = vec3(v_color[0] / 255.0, v_color[1] / 255.0, v_color[2] / 255.0);
-                    fragColor = vec4(n_color, 1.0);
+                    fragColor = vec4
+                    (
+                        float(v_color[0]) / 255.0,
+                        float(v_color[1]) / 255.0,
+                        float(v_color[2]) / 255.0,
+                        float(v_color[3]) / 255.0
+                    );
                 }
             `
         );
@@ -83,7 +93,7 @@ export class Renderer {
         const a_color = shader.getAttribute('a_color');
         webgl.enableVertexAttribArray(a_color.location);
         webgl.bindBuffer(webgl.ARRAY_BUFFER, colors_buffer);
-        webgl.vertexAttribPointer(a_color.location, 3, webgl.UNSIGNED_BYTE, false, 3 * 1, 0);
+        webgl.vertexAttribPointer(a_color.location, 4, webgl.UNSIGNED_BYTE, false, 4 * 1, 0);
 
         var u_resolution = shader.getUniform('u_resolution');
 

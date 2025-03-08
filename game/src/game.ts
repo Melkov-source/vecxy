@@ -1,4 +1,4 @@
-import { Engine, Vector2, Logger } from 'vecxy';
+import { Engine, Vector2, Logger, Color } from 'vecxy';
 
 
 const engine = new Engine();
@@ -21,7 +21,8 @@ logger.fatal('Fatal error, vectors cannot be processed:', vector_1, vector_2, ve
 logger.success('Success! Vectors processed correctly:', vector_1, vector_2, vector_3);
 logger.failed('Failed to process vectors:', vector_1, vector_2, vector_3);
 
-throw new Error("test");
+
+Color.fromHex('#beffc7');
 
 
 
