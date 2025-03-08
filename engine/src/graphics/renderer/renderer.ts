@@ -1,4 +1,4 @@
-import { Shader } from "./shader";
+import { ShaderWebGL } from "./shader.webgl";
 import { WebGL } from "./webgl";
 
 export class Renderer {
@@ -33,7 +33,7 @@ export class Renderer {
         webgl.bindBuffer(webgl.ARRAY_BUFFER, colors_buffer);
         webgl.bufferData(webgl.ARRAY_BUFFER, colors, webgl.STATIC_DRAW);
 
-        const shader = new Shader(
+        const shader = new ShaderWebGL(
             `#version 300 es
 
                 precision mediump float;
@@ -75,18 +75,18 @@ export class Renderer {
 
 
         const a_position = shader.getAttribute('a_position');
-        webgl.enableVertexAttribArray(a_position);
+        webgl.enableVertexAttribArray(a_position.location);
         webgl.bindBuffer(webgl.ARRAY_BUFFER, positions_buffer);
-        webgl.vertexAttribPointer(a_position, 2, webgl.FLOAT, false, 0, 0);
+        webgl.vertexAttribPointer(a_position.location, 2, webgl.FLOAT, false, 0, 0);
 
         const a_color = shader.getAttribute('a_color');
-        webgl.enableVertexAttribArray(a_color);
+        webgl.enableVertexAttribArray(a_color.location);
         webgl.bindBuffer(webgl.ARRAY_BUFFER, colors_buffer);
-        webgl.vertexAttribPointer(a_color, 3, webgl.FLOAT, false, 0, 0);
+        webgl.vertexAttribPointer(a_color.location, 3, webgl.FLOAT, false, 0, 0);
 
-        var resolution_uniform_location = shader.getUniformLocation('u_resolution');
+        var u_resolution = shader.getUniform('u_resolution');
 
-        webgl.uniform2f(resolution_uniform_location, webgl.canvas.width, webgl.canvas.height);
+        webgl.uniform2f(u_resolution.location, webgl.canvas.width, webgl.canvas.height);
 
         webgl.clearColor(0.0, 0.0, 0.0, 1.0);
         webgl.clear(webgl.COLOR_BUFFER_BIT);
