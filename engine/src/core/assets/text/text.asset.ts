@@ -1,4 +1,4 @@
-import { Asset } from "./asset";
+import { Asset } from "../asset";
 
 export class TextAsset extends Asset {
     private declare _text: string;

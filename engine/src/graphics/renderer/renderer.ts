@@ -16,13 +16,13 @@ export class Renderer {
 
         vertices = Float32Array.from(vertices, v => v + 50);
 
-        const colors = new Float32Array([
-            1, 0.5, 1,
-            1, 1, 1,
-            1, 0.5, 1,
-            1, 1, 1,
-            0.5, 1, 0.5,
-            1, 0.5, 1
+        const colors = new Uint8Array([
+            127, 255, 127,
+            255, 255, 255,
+            255, 255, 255,
+            255, 255, 255,
+            255, 255, 255,
+            127, 255, 127
         ]);
 
         const positions_buffer = webgl.createBuffer();
@@ -66,7 +66,8 @@ export class Renderer {
                 out vec4 fragColor;
 
                 void main() {
-                    fragColor = vec4(v_color, 1.0);
+                    vec3 n_color = vec3(v_color[0] / 255.0, v_color[1] / 255.0, v_color[2] / 255.0);
+                    fragColor = vec4(n_color, 1.0);
                 }
             `
         );
@@ -77,12 +78,12 @@ export class Renderer {
         const a_position = shader.getAttribute('a_position');
         webgl.enableVertexAttribArray(a_position.location);
         webgl.bindBuffer(webgl.ARRAY_BUFFER, positions_buffer);
-        webgl.vertexAttribPointer(a_position.location, 2, webgl.FLOAT, false, 0, 0);
+        webgl.vertexAttribPointer(a_position.location, 2, webgl.FLOAT, false, 2 * 4, 0);
 
         const a_color = shader.getAttribute('a_color');
         webgl.enableVertexAttribArray(a_color.location);
         webgl.bindBuffer(webgl.ARRAY_BUFFER, colors_buffer);
-        webgl.vertexAttribPointer(a_color.location, 3, webgl.FLOAT, false, 0, 0);
+        webgl.vertexAttribPointer(a_color.location, 3, webgl.UNSIGNED_BYTE, false, 3 * 1, 0);
 
         var u_resolution = shader.getUniform('u_resolution');
 
