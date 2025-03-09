@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "gl-matrix": "^3.4.3",
+        "reflect-metadata": "^0.2.2",
         "tslib": "^2.8.1"
     },
     "devDependencies": {

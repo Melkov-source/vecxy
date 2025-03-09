@@ -37,4 +37,12 @@ export class Vector2 {
 
         return length;
     }
+
+    public toArray(): number[] {
+        return [this.x, this.y];
+    }
+
+    public toFloat32Array(): Float32Array {
+        return new Float32Array(this.toArray());
+    }
 }

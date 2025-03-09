@@ -11,6 +11,7 @@ export default {
         {
             file: 'build/game.js',  // Скомпилированный файл игры
             format: 'umd',           // Универсальный формат для использования в браузере
+            name: 'Game',  // <-- Добавь имя здесь
             sourcemap: true,
         },
     ],
@@ -53,5 +54,5 @@ export default {
 
         sourcemaps(),
     ],
-    external: [], // Движок будет упакован, не нужно исключать его
+    external: []
 };

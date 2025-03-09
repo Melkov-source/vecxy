@@ -11,7 +11,9 @@
       "esModuleInterop": true, // Для импорта CommonJS модулей
       "skipLibCheck": true, // Пропускать проверку типов в библиотеках (для скорости)
       "forceConsistentCasingInFileNames": true, // Убедиться, что регистр букв в файлах одинаков
-      "sourceMap": true
+      "sourceMap": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true
     },
     "include": [
       "src/**/*.ts" // Включаем все файлы .ts в папке src

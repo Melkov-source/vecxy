@@ -1,45 +1,44 @@
-import { Engine, Vector2, Logger, Color } from 'vecxy';
+import { Engine, GameObject, IGame, Inject, Logger, SceneSystem, Service, Sprite, SpriteComponent, Vector2 } from 'vecxy';
+
+class Game implements IGame {
+    public start(): void {
+        const game_object = new GameObject();
+
+        const sprite = game_object.addComponent(SpriteComponent);
+
+        const createDebugGui = (): void => {
+            const gui = new (window as any).dat.GUI();
+        
+            const params = {
+                x: 100,
+                y: 100
+            };
+        
+            gui.add(params, 'x', 1, 1000).name('X:').onChange((value: any) => {
+                sprite.setSize(new Vector2(params.x, params.y));
+            });
+
+            gui.add(params, 'y', 1, 1000).name('Y:').onChange((value: any) => {
+                sprite.setSize(new Vector2(params.x, params.y));
+            });
+        }
+
+        createDebugGui();
 
 
-const engine = new Engine();
+        SceneSystem.scene.AddGameObject(game_object);
+    }
+
+    public update(): void {
+
+    }
+
+    public render(): void {
+    }
+}
+
+const game = new Game();
+
+const engine = new Engine(game);
 
 engine.run();
-
-const logger = new Logger("game");
-
-
-const vector_1 = new Vector2(1, 2);
-const vector_2 = new Vector2();
-const vector_3 = new Vector2(vector_1);
-
-logger.trace('Tracking vector values:', vector_1, vector_2, vector_3);
-logger.debug('Debugging vector values:', vector_1, vector_2, vector_3);
-logger.info('Information about vectors:', vector_1, vector_2, vector_3);
-logger.warn('Warning: Potential issue with vectors:', vector_1, vector_2, vector_3);
-logger.error('Error encountered while processing vectors:', vector_1, vector_2, vector_3);
-logger.fatal('Fatal error, vectors cannot be processed:', vector_1, vector_2, vector_3);
-logger.success('Success! Vectors processed correctly:', vector_1, vector_2, vector_3);
-logger.failed('Failed to process vectors:', vector_1, vector_2, vector_3);
-
-
-Color.fromHex('#beffc7');
-
-
-
-function createDebugGui(): void {
-    const gui = new (window as any).dat.GUI();
-
-    const params = {
-        color: [1.0, 0.0, 0.0], // Изначальный красный цвет
-        speed: 1.0
-    };
-
-    // Настроим элементы управления
-    gui.addColor(params, 'color').name('Triangle Color').onChange((value: any) => {
-        console.log(value)
-    });
-
-    gui.add(params, 'speed', 0.1, 10).name('Rotation Speed').onChange((value: any) => {
-        console.log(value)
-    });;
-}

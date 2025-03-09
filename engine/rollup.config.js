@@ -28,5 +28,8 @@ export default {
                 { src: 'internal/*', dest: 'dist/internal' },  // Копируем файлы
             ]
         }),
+    ],
+    external: [
+        "reflect-metadata"
     ]
 };
