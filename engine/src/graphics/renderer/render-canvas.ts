@@ -57,9 +57,7 @@ export class RenderCanvas implements IRenderTarget {
     }
 
     public display(): void {
-        const primitive = WebGLUtils.toPrimitiveEnum(this.ctx, WEBGL_PRIMITIVE.TRIANGLES);
-
-        this.ctx.drawArrays(primitive, 0, 6);
+       
     }
 
     public resize() {

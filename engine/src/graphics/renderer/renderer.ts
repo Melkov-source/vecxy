@@ -10,13 +10,10 @@ export class Renderer {
     }
 
     public render(): void {
-       
-        
-        SceneSystem.render(this._render_canvas);
-        
-        this._render_canvas.render();
         this._render_canvas.resize();
         this._render_canvas.clear();
+        SceneSystem.render(this._render_canvas);
+        this._render_canvas.render();
         this._render_canvas.display();
     }
 }

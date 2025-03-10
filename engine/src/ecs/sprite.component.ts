@@ -19,4 +19,8 @@ export class SpriteComponent extends Component {
         this._sprite.size = size;
     }
 
+    public setPosition(position: Vector2) {
+        this._sprite.position = position;
+    }
+
 }
