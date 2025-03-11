@@ -40,7 +40,7 @@ export class RenderCanvas implements IRenderTarget {
     public clear(): void {
         this._drawables = [];
 
-        this.ctx.clearColor(1, 0.0, 0.0, 1.0);
+        this.ctx.clearColor(0.0, 0.0, 0.0, 1.0);
         this.ctx.clear(this.ctx.COLOR_BUFFER_BIT);
     }
 
