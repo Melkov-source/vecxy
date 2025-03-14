@@ -15,7 +15,7 @@ export class Sprite implements IDrawable {
     public size: Vector2;
 
     public constructor() {
-        this.position = new Vector2(1920/2, 0);
+        this.position = new Vector2(0, 0);
         this.size = new Vector2(100, 100);
         this._color = Color.green();
 
@@ -108,6 +108,8 @@ export class Sprite implements IDrawable {
             centerX - this.size.x / 2 + this.position.x, centerY + this.size.y / 2 + this.position.y,
         ]);
 
+        this._ctx.sub 
+        
         this._ctx.enableVertexAttribArray(a_position.location);
 
         this._ctx.bindBuffer(this._ctx.ARRAY_BUFFER, position_buffer);
