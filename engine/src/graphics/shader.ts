@@ -1,19 +1,19 @@
-import { IDisposable } from "../../common/disposable.interface";
-import { AttributeWebGL } from "./attribute.webgl";
-import { UniformWebGL } from "./uniform.webgl";
+import { IDisposable } from "../common/disposable.interface";
+import { Attribute } from "./attribute";
+import { Uniform } from "./uniform";
 import { WEBGL_SHADER, WebGLUtils } from "./webgl.utils";
 
-export class ShaderWebGL implements IDisposable {
-    private readonly _ctx: WebGLRenderingContext | WebGL2RenderingContext;
+export class Shader implements IDisposable {
+    private readonly _ctx: WebGL2RenderingContext;
 
     private declare _program: WebGLProgram;
     private declare _shader_vert: WebGLShader;
     private declare _shader_frag: WebGLShader;
 
-    private readonly _attibutes: Map<string, AttributeWebGL> = new Map();
-    private readonly _uniforms: Map<string, UniformWebGL> = new Map();
+    private readonly _attibutes: Map<string, Attribute> = new Map();
+    private readonly _uniforms: Map<string, Uniform> = new Map();
 
-    public constructor(vert_s: string, frag_s: string, ctx: WebGLRenderingContext | WebGL2RenderingContext) {
+    public constructor(vert_s: string, frag_s: string, ctx: WebGL2RenderingContext) {
         this._ctx = ctx;
         this.createProgram(vert_s, frag_s);
 
@@ -35,7 +35,7 @@ export class ShaderWebGL implements IDisposable {
         this._ctx.useProgram(this._program);
     }
 
-    public getAttribute(name: string): AttributeWebGL {
+    public getAttribute(name: string): Attribute {
         if (!this._attibutes.has(name)) {
             throw new Error(`Not found atribute: ${name} by shader program!`)
         }
@@ -43,7 +43,7 @@ export class ShaderWebGL implements IDisposable {
         return this._attibutes.get(name)!;
     }
 
-    public getUniform(name: string): UniformWebGL {
+    public getUniform(name: string): Uniform {
         if (!this._uniforms.has(name)) {
             throw new Error(`Not found uniform: ${name} by shader program!`)
         }
@@ -126,7 +126,7 @@ export class ShaderWebGL implements IDisposable {
 
             const location = this._ctx.getAttribLocation(this._program, info.name);
 
-            const attirbute = new AttributeWebGL(info, location);
+            const attirbute = new Attribute(info, location);
 
             this._attibutes.set(info.name, attirbute);
         }
@@ -144,7 +144,7 @@ export class ShaderWebGL implements IDisposable {
 
             const location = this._ctx.getUniformLocation(this._program, info.name)!;
 
-            const uniform = new UniformWebGL(info, location);
+            const uniform = new Uniform(info, location);
 
             this._uniforms.set(info.name, uniform);
         }

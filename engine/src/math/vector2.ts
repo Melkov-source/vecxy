@@ -1,8 +1,10 @@
 export class Vector2 {
+    public static one(): Vector2 { return new Vector2(1, 1); }
+    public static zero(): Vector2 { return new Vector2(0, 0); }
+
     public declare x: number;
     public declare y: number;
 
-    //Initialization
     public constructor();
     public constructor(vector: Vector2)
     public constructor(x: number, y: number)

@@ -1,20 +1,25 @@
 #version 300 es
-
-in vec2 a_position;
-in vec3 a_color;
+    
+precision mediump float;
 
 uniform vec2 u_resolution;
 
-out vec3 v_color;
+in vec2 a_position;
+in vec2 a_texture_coords;
 
-void main() {
-    v_color = a_color;
+out vec2 v_texture_coords;
 
+void main() 
+{
+    v_texture_coords = a_texture_coords;
+    
     vec2 zero_to_one = a_position / u_resolution;
 
-    vec2 zero_to_two = zero_to_one * 2.0f;
+    vec2 zero_to_two = zero_to_one * 2.0;
 
-    vec2 clip_space = (zero_to_two - 1.0f) * vec2(1, -1);
+    vec2 clip_space = zero_to_two - 1.0;
 
-    gl_Position = vec4(clip_space, 0.0f, 1.0f);
+    clip_space.y *= 1.0;
+
+    gl_Position = vec4(clip_space, 0.0, 1.0);
 }

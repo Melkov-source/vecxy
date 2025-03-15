@@ -1,8 +1,14 @@
-import { IRenderTarget } from "../graphics/renderer/render-target.interface";
-import { GameObject } from "./game-object";
+import { Node } from "./node";
 
 export abstract class Component {
-    public declare gameObject: GameObject;
+    public readonly node: Node;
 
-    public abstract render(render_target: IRenderTarget): void;
+    public constructor(node: Node) {
+        this.node = node;
+    }
+
+    public start?(): void;
+    public update?(dt: number): void;
+    public onDisable?(): void;
+    public onDestory?(): void;
 }

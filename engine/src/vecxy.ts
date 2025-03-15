@@ -2,7 +2,7 @@
 export * from './game.interface';
 
 //Core
-export * from './core/engine';
+export * from './engine';
 
 //Math
 export * from './math/vector2';
@@ -10,15 +10,18 @@ export * from './math/vector2';
 //Debug
 export * from './debug/logger/logger';
 
+//DI
+export * from './di/di.decorators';
+
 //Graphics
 export * from './graphics/color';
 export * from './graphics/sprite';
 
-//DI
-export * from './di/di.decorators';
-
 //ECS
-export * from './ecs/scene-system';
-export * from './ecs/game-object';
 export * from './ecs/component';
-export * from './ecs/sprite.component';
+export * from './ecs/node';
+export * from './ecs/scene';
+export * from './ecs/components/sprite-renderer.component';
+
+//Assets
+export * from './assets/asset.manager';

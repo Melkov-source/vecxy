@@ -1,17 +1,9 @@
-import { Color } from "../color";
-import { ShaderWebGL } from "../webgl/shader.webgl";
-import { WEBGL_PRIMITIVE, WebGLUtils } from "../webgl/webgl.utils";
-import { IDrawable } from "./drawable.interface";
-import { IRenderTarget } from "./render-target.interface";
-
 const WEBGL_CONTEXT: string = 'webgl';
 const WEBGL2_CONTEXT: string = 'webgl2';
 
-export class RenderCanvas implements IRenderTarget {
-    public readonly ctx: WebGLRenderingContext | WebGL2RenderingContext;
+export class Renderer {
+    public readonly ctx: WebGL2RenderingContext;
     public readonly canvas: HTMLCanvasElement;
-
-    private _drawables: IDrawable[] = [];
 
     public constructor(element_id: string) {
         const element = document.getElementById(element_id);
@@ -32,32 +24,18 @@ export class RenderCanvas implements IRenderTarget {
             }
         }
 
-        (document as any).webgl = this.ctx;
+        (document as any).renderer = this;
 
         this.resize();
     }
 
-    public clear(): void {
-        this._drawables = [];
+    public render(): void {
+        this.resize();
 
         this.ctx.clearColor(0.0, 0.0, 0.0, 1.0);
         this.ctx.clear(this.ctx.COLOR_BUFFER_BIT);
-    }
 
-    public draw(drawable: IDrawable): void {
-        this._drawables.push(drawable);
-    }
-
-    public render(): void {
-        for (let index = 0; index < this._drawables.length; index++) {
-            const element = this._drawables[index];
-            
-            element.draw(this);
-        }
-    }
-
-    public display(): void {
-       
+        //Render
     }
 
     public resize() {

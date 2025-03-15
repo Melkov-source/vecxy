@@ -1,31 +1,15 @@
-import { Engine, GameObject, IGame, Inject, Logger, SceneSystem, Service, Sprite, SpriteComponent, Vector2 } from 'vecxy';
+import { Engine, IGame, Node, Scene } from "vecxy";
+import { Bird } from "./bird";
 
 class Game implements IGame {
-    public start(): void {
-        // Assets.load<Sprite>("assets/textures/splash.jpeg", (texture: Sprite) => {
+    private _bird: Bird | null = null;
 
-        // });
-
-        // const sprite: Sprite = Assets.loadAsync<Sprite>("assets/textures/splash.jpeg");
-
-        // const game_object = new GameObject();
-
-        // var sprite_renderer = game_object.addComponent(SpriteRenderer);
-
-        // sprite_renderer.setSprite(sprite);
-
-        const game_object = new GameObject();
-        const sprite = game_object.addComponent(SpriteComponent);
-
-        SceneSystem.scene.AddGameObject(game_object);
+    public async start(): Promise<void> {
+        this._bird = Bird.create();
     }
 
     public update(): void {
-
-    }
-
-    public render(): void {
-
+        
     }
 }
 

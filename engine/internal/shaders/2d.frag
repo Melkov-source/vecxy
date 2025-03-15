@@ -1,9 +1,18 @@
 #version 300 es
+    
+precision mediump float;
 
-in vec3 v_color;
+uniform vec4 u_color;
+uniform sampler2D u_texture;
 
-out vec4 fragColor;
+in vec2 v_texture_coords;
 
-void main() {
-    fragColor = vec4(v_color, 1.0f);
+out vec4 frag_color;
+
+void main() 
+{
+    vec4 texture = texture2D(u_texture, v_texture_coords);
+
+    frag_color = texture * u_color;
 }
+    

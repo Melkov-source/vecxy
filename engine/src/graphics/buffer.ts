@@ -1,16 +1,15 @@
-import { IDisposable } from "../../common/disposable.interface";
 import { WEBGL_BUFFER, WEBGL_DATA, WEBGL_PRIMITIVE, WebGLUtils } from "./webgl.utils";
 
-export class BufferWebGL implements IDisposable {
-    private readonly _ctx: WebGLRenderingContext | WebGL2RenderingContext;
-    
+export class Buffer {
+    private readonly _ctx: WebGL2RenderingContext;
+
     private readonly _data_type: GLenum;
     private readonly _buffer_type: GLenum;
     private readonly _primitive_type: GLenum;
 
     private readonly _buffer: WebGLBuffer;
 
-    public constructor(data: WEBGL_DATA, buffer: WEBGL_BUFFER, primitive: WEBGL_PRIMITIVE, ctx: WebGLRenderingContext | WebGL2RenderingContext) {
+    public constructor(data: WEBGL_DATA, buffer: WEBGL_BUFFER, primitive: WEBGL_PRIMITIVE, ctx: WebGL2RenderingContext) {
         this._ctx = ctx;
         this._buffer = ctx.createBuffer();
 

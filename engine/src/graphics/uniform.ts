@@ -1,4 +1,4 @@
-export class UniformWebGL {
+export class Uniform {
     public readonly name: string;
     public readonly location: WebGLUniformLocation;
     
