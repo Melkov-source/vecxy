@@ -25,3 +25,6 @@ export * from './ecs/components/sprite-renderer.component';
 
 //Assets
 export * from './assets/asset.manager';
+
+//Utils
+export * from './utils/async.utils';

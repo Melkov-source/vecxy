@@ -1,14 +1,19 @@
+import { Scene } from "./ecs/scene";
 import { IGame } from "./game.interface";
-import { Renderer } from "./graphics/renderer";
-import { Scene } from "./vecxy";
+import { GL } from "./graphics/gl";
+import { ShaderManager } from "./graphics/shader.manager";
+import { TextureManager } from "./graphics/texture.manager";
 
 export class Engine {
-    private readonly _renderer: Renderer;
+    private readonly _gl: GL;
     private readonly _game: IGame;
 
     public constructor(game: IGame) {
-        this._renderer = new Renderer("game-canvas");
+        this._gl = new GL("game-canvas");
         this._game = game;
+
+        new ShaderManager();
+        new TextureManager();
     }
 
     public run(): void {
@@ -38,6 +43,6 @@ export class Engine {
     }
 
     private render(): void {
-        this._renderer.render();
+        this._gl.render();
     }
 }

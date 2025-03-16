@@ -5,7 +5,7 @@ export class Sprite {
     public readonly texture: Texture;
 
     private constructor(texture: Texture) {
-        this.texture = texture;
+       this.texture = texture;
     }
 
     public static fromImage(image: HTMLImageElement): Sprite {

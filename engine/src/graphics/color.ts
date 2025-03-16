@@ -54,10 +54,10 @@ export class Color {
 
     public toArray(): number[] {
         return [
-            this.r0255(), 
-            this.g0255(), 
-            this.b0255(), 
-            this.a0255()
+            this.r01(), 
+            this.g01(), 
+            this.b01(), 
+            this.a01()
         ]
     }
 

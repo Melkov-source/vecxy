@@ -1,3 +1,4 @@
+import { GL } from "./gl";
 import { Texture } from "./texture";
 
 export class TextureManager {
@@ -7,14 +8,12 @@ export class TextureManager {
 
     private static _instance: TextureManager;
 
-    private readonly _ctx: WebGL2RenderingContext;
-    private readonly _texture: Texture[];
+    private readonly _textures: Texture[];
 
     private _current_texture: Texture | null = null;
 
-    public constructor(ctx: WebGL2RenderingContext) {
-        this._ctx = ctx;
-        this._texture = [];
+    public constructor() {
+        this._textures = [];
 
         TextureManager._instance = this;
 
@@ -22,14 +21,14 @@ export class TextureManager {
     }
 
     public create(image: HTMLImageElement): Texture {
-        const texture = new Texture(this._ctx, image);
+        const texture = new Texture(image);
 
         texture.onDisposed.add(this.onDisposedTexture, this);
         texture.onBinded.add(this.onBindedTexture, this);
 
         texture.initialize();
 
-        this._texture.push(texture);
+        this._textures.push(texture);
 
         return texture;
     }
@@ -39,13 +38,13 @@ export class TextureManager {
     }
 
     private onDisposedTexture(texture: Texture): void {
-        const index = this._texture.indexOf(texture);
+        const index = this._textures.indexOf(texture);
 
         if(index === -1) {
             return;
         }
 
-        this._texture.splice(index, 1);
+        this._textures.splice(index, 1);
 
         if(this._current_texture === texture) {
             this._current_texture = null;

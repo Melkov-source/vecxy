@@ -9,7 +9,7 @@ class Game implements IGame {
     }
 
     public update(): void {
-        
+
     }
 }
 

@@ -1,8 +1,7 @@
+import { GL } from "./gl";
 import { WEBGL_BUFFER, WEBGL_DATA, WEBGL_PRIMITIVE, WebGLUtils } from "./webgl.utils";
 
 export class Buffer {
-    private readonly _ctx: WebGL2RenderingContext;
-
     private readonly _data_type: GLenum;
     private readonly _buffer_type: GLenum;
     private readonly _primitive_type: GLenum;
@@ -10,7 +9,7 @@ export class Buffer {
     private readonly _buffer: WebGLBuffer;
 
     public constructor(data: WEBGL_DATA, buffer: WEBGL_BUFFER, primitive: WEBGL_PRIMITIVE, ctx: WebGL2RenderingContext) {
-        this._ctx = ctx;
+        GL.ctx = ctx;
         this._buffer = ctx.createBuffer();
 
         this._data_type = WebGLUtils.toDataEnum(ctx, data);
@@ -21,10 +20,10 @@ export class Buffer {
     }
 
     public bind(): void {
-        this._ctx.bindBuffer(this._buffer_type, this._buffer);
+        GL.ctx.bindBuffer(this._buffer_type, this._buffer);
     }
 
     public dispose(): void {
-        this._ctx.deleteBuffer(this._buffer);
+        GL.ctx.deleteBuffer(this._buffer);
     }
 }

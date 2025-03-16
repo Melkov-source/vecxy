@@ -1,7 +1,10 @@
-import { AssetManager, Color, Component, Scene, SpriteRenderer, Node } from "vecxy";
+import { AssetManager, Color, Component, Scene, SpriteRenderer, Node, Sprite, Vector2, Logger, AsyncUtils } from "vecxy";
 
 export class Bird extends Component {
+    private readonly _logger: Logger = new Logger(Bird.name);;
+
     private declare _sprite_renderer: SpriteRenderer;
+    private declare _red_bird_sprite: Sprite;
 
     public static create(): Bird {
         const node = new Node({
@@ -16,11 +19,21 @@ export class Bird extends Component {
     }
 
     public async start(): Promise<void> {
-        this._sprite_renderer = this.node.addComponent(SpriteRenderer);
+        await AsyncUtils.wait(2);
+        this._logger.trace("start!");
 
-        const sprite = await AssetManager.loadSpriteAsync("./assets/sprites/redbird-midflap.png");
+        this._sprite_renderer = this.node.getComponent(SpriteRenderer)!;
 
-        this._sprite_renderer.sprite = sprite;
-        this._sprite_renderer.color = Color.green();
+        this._red_bird_sprite = await AssetManager.loadSpriteAsync("./assets/sprites/redbird-midflap.png");
+
+        this._sprite_renderer.setSprite(this._red_bird_sprite);
+
+        this.node.transform.scale = new Vector2(0.01, 0.01);
+
+        this.node.transform.rotation = -30;
+    }
+
+    public update(): void {
+
     }
 }

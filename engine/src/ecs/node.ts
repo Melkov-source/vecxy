@@ -8,11 +8,13 @@ export class Node {
     public readonly components: Component[];
 
     public get is_active(): boolean { return this._is_active; }
+    public get parent(): Node | null { return this._parent; }
 
     private _is_active: boolean = false;
+    private _parent: Node | null = null;
 
     public constructor(options?: {
-        parent?: Node | null, 
+        parent?: Node | null,
         components?: { new(node: Node): Component }[]
     }) {
         this.transform = new Transform();
@@ -20,40 +22,47 @@ export class Node {
         this.children = [];
         this.components = [];
 
-        if(options === undefined) {
-            //TODO: Set parent to current scene
+        if (options === undefined) {
+            if(this instanceof Scene) {
+                return;
+            }
+            
+            this.setParent(Scene.current as Node);
+            this.setAtive(true);
             return;
         }
 
-        if(options.components) {
+        if (options.components) {
             for (let index = 0, count = options.components.length; index < count; ++index) {
                 const component = options.components[index];
-    
+
                 this.addComponent(component);
             }
         }
-    
-        //TODO: Use options parent
+
+        if (options.parent) {
+            this.setParent(options.parent);
+        } else {
+            this.setParent(Scene.current as Node);
+        }
+
+        this.setAtive(true);
     }
 
     public update(dt: number): void {
-        for (let index = 0, count = this.components.length; index < count; ++index) {
-            const component = this.components[index];
-
-            if (component.update) {
-                component.update(dt);
-            }
+        if (this._is_active === false) {
+            return;
         }
 
-        for (let index = 0, count = this.children.length; index < count; ++index) {
-            const child = this.children[index];
+        this.invokeInternal(this.update.name, this, dt);
+    }
 
-            if(child.is_active === false) {
-                continue;
-            }
-
-            child.update(dt);
+    public render(): void {
+        if (this._is_active === false) {
+            return;
         }
+
+        this.invokeInternal(this.render.name, this);
     }
 
     public setAtive(active: boolean): void {
@@ -62,10 +71,24 @@ export class Node {
         //TODO: Create logic for active
     }
 
+    public setParent(parent: Node): void {
+        if (this._parent !== null) {
+            this._parent.removeChildInternal(this);
+        }
+
+        this._parent = parent;
+
+        this._parent.addChildInternal(this);
+    }
+
     public addComponent<TComponent extends Component>(ctor: { new(node: Node): TComponent }): TComponent {
         const component = new ctor(this);
 
         this.components.push(component);
+
+        if (component.start) {
+            component.start();
+        }
 
         return component;
     }
@@ -90,5 +113,41 @@ export class Node {
                 component.onDestory();
             }
         }
+    }
+
+    private invokeInternal(func_name: string, node: Node, ...args: any[]): void {
+        for (let index = 0, count = node.components.length; index < count; ++index) {
+            const component = node.components[index] as any;
+    
+            const func = component[func_name] as Function;
+    
+            if (func) {
+                func.apply(component, args);
+            }
+        }
+    
+        for (let index = 0, count = node.children.length; index < count; ++index) {
+            const child = node.children[index] as any;
+    
+            if (child.is_active === false) {
+                continue;
+            }
+    
+            this.invokeInternal(func_name, child, ...args);
+        }
+    }
+
+    private addChildInternal(child: Node): void {
+        this.children.push(child);
+    }
+
+    private removeChildInternal(child: Node): void {
+        const index = this.children.indexOf(child);
+
+        if (index === -1) {
+            return;
+        }
+
+        this.children.splice(index, 1);
     }
 }

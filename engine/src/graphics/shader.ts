@@ -1,11 +1,10 @@
 import { IDisposable } from "../common/disposable.interface";
 import { Attribute } from "./attribute";
+import { GL } from "./gl";
 import { Uniform } from "./uniform";
 import { WEBGL_SHADER, WebGLUtils } from "./webgl.utils";
 
 export class Shader implements IDisposable {
-    private readonly _ctx: WebGL2RenderingContext;
-
     private declare _program: WebGLProgram;
     private declare _shader_vert: WebGLShader;
     private declare _shader_frag: WebGLShader;
@@ -13,8 +12,7 @@ export class Shader implements IDisposable {
     private readonly _attibutes: Map<string, Attribute> = new Map();
     private readonly _uniforms: Map<string, Uniform> = new Map();
 
-    public constructor(vert_s: string, frag_s: string, ctx: WebGL2RenderingContext) {
-        this._ctx = ctx;
+    public constructor(vert_s: string, frag_s: string) {
         this.createProgram(vert_s, frag_s);
 
         this.detectAttributes();
@@ -22,17 +20,17 @@ export class Shader implements IDisposable {
     }
 
     public dispose(): void {
-        this._ctx.deleteShader(this._shader_vert);
-        this._ctx.deleteShader(this._shader_frag);
+        GL.ctx.deleteShader(this._shader_vert);
+        GL.ctx.deleteShader(this._shader_frag);
 
-        this._ctx.deleteProgram(this._program);
+        GL.ctx.deleteProgram(this._program);
 
         this._attibutes.clear();
         this._uniforms.clear();
     }
 
     public use(): void {
-        this._ctx.useProgram(this._program);
+        GL.ctx.useProgram(this._program);
     }
 
     public getAttribute(name: string): Attribute {
@@ -62,24 +60,24 @@ export class Shader implements IDisposable {
         this._shader_vert = shader_vert;
         this._shader_frag = shader_frag;
 
-        const program = this._ctx.createProgram();
+        const program = GL.ctx.createProgram();
 
         if (!program) {
             console.error(`Shader program not created!`);
             return;
         }
 
-        this._ctx.attachShader(program, shader_vert);
-        this._ctx.attachShader(program, shader_frag);
+        GL.ctx.attachShader(program, shader_vert);
+        GL.ctx.attachShader(program, shader_frag);
 
-        this._ctx.linkProgram(program);
+        GL.ctx.linkProgram(program);
 
-        const success = this._ctx.getProgramParameter(program, this._ctx.LINK_STATUS);
+        const success = GL.ctx.getProgramParameter(program, GL.ctx.LINK_STATUS);
 
         if (!success) {
-            console.error('Error linking program:', this._ctx.getProgramInfoLog(program));
+            console.error('Error linking program:', GL.ctx.getProgramInfoLog(program));
 
-            this._ctx.deleteProgram(program);
+            GL.ctx.deleteProgram(program);
             return;
         }
 
@@ -89,24 +87,24 @@ export class Shader implements IDisposable {
     private createShader(type: WEBGL_SHADER, source: string): WebGLShader | null {
         let shader: WebGLShader | null = null;
 
-        const gl_enum = WebGLUtils.toShaderEnum(this._ctx, type);
+        const gl_enum = WebGLUtils.toShaderEnum(GL.ctx, type);
 
-        shader = this._ctx.createShader(gl_enum);
+        shader = GL.ctx.createShader(gl_enum);
 
         if (!shader) {
             console.error(`Not created shader type: ${type}`)
             return null;
         }
 
-        this._ctx.shaderSource(shader, source);
-        this._ctx.compileShader(shader);
+        GL.ctx.shaderSource(shader, source);
+        GL.ctx.compileShader(shader);
 
-        const success = this._ctx.getShaderParameter(shader, this._ctx.COMPILE_STATUS);
+        const success = GL.ctx.getShaderParameter(shader, GL.ctx.COMPILE_STATUS);
 
         if (!success) {
-            console.error(`Shader error compilation: ${this._ctx.getShaderInfoLog(shader)}`);
+            console.error(`Shader error compilation: ${GL.ctx.getShaderInfoLog(shader)}`);
 
-            this._ctx.deleteShader(shader);
+            GL.ctx.deleteShader(shader);
 
             return null;
         }
@@ -115,16 +113,16 @@ export class Shader implements IDisposable {
     }
 
     private detectAttributes(): void {
-        const count = this._ctx.getProgramParameter(this._program, this._ctx.ACTIVE_ATTRIBUTES);
+        const count = GL.ctx.getProgramParameter(this._program, GL.ctx.ACTIVE_ATTRIBUTES);
 
         for (let index = 0; index < count; ++index) {
-            const info = this._ctx.getActiveAttrib(this._program, index);
+            const info = GL.ctx.getActiveAttrib(this._program, index);
 
             if (!info) {
                 break;
             }
 
-            const location = this._ctx.getAttribLocation(this._program, info.name);
+            const location = GL.ctx.getAttribLocation(this._program, info.name);
 
             const attirbute = new Attribute(info, location);
 
@@ -133,16 +131,16 @@ export class Shader implements IDisposable {
     }
 
     private detectUniforms(): void {
-        const count = this._ctx.getProgramParameter(this._program, this._ctx.ACTIVE_UNIFORMS);
+        const count = GL.ctx.getProgramParameter(this._program, GL.ctx.ACTIVE_UNIFORMS);
 
         for (let index = 0; index < count; ++index) {
-            const info = this._ctx.getActiveUniform(this._program, index);
+            const info = GL.ctx.getActiveUniform(this._program, index);
 
             if (!info) {
                 break;
             }
 
-            const location = this._ctx.getUniformLocation(this._program, info.name)!;
+            const location = GL.ctx.getUniformLocation(this._program, info.name)!;
 
             const uniform = new Uniform(info, location);
 

@@ -1,8 +1,10 @@
+import { Scene } from "../ecs/scene";
+
 const WEBGL_CONTEXT: string = 'webgl';
 const WEBGL2_CONTEXT: string = 'webgl2';
 
-export class Renderer {
-    public readonly ctx: WebGL2RenderingContext;
+export class GL {
+    public static ctx: WebGL2RenderingContext;
     public readonly canvas: HTMLCanvasElement;
 
     public constructor(element_id: string) {
@@ -14,12 +16,12 @@ export class Renderer {
 
         this.canvas = element as HTMLCanvasElement;
 
-        this.ctx = this.canvas.getContext(WEBGL2_CONTEXT) as WebGL2RenderingContext;
+        GL.ctx = this.canvas.getContext(WEBGL2_CONTEXT) as WebGL2RenderingContext;
 
-        if (!this.ctx) {
+        if (!GL.ctx) {
             console.warn('[WebGL] WebGL 2.0 not supported, falling back to WebGL 1.0');
 
-            if (!this.ctx) {
+            if (!GL.ctx) {
                 throw new Error(`[WebGL] WebGL 1.0 is not supported by your browser!`);
             }
         }
@@ -32,10 +34,10 @@ export class Renderer {
     public render(): void {
         this.resize();
 
-        this.ctx.clearColor(0.0, 0.0, 0.0, 1.0);
-        this.ctx.clear(this.ctx.COLOR_BUFFER_BIT);
+        GL.ctx.clearColor(0.0, 0.0, 0.0, 1.0);
+        GL.ctx.clear(GL.ctx.COLOR_BUFFER_BIT);
 
-        //Render
+        Scene.current?.render();
     }
 
     public resize() {
@@ -57,6 +59,6 @@ export class Renderer {
         this.canvas.width = display_width;
         this.canvas.height = display_height;
 
-        this.ctx.viewport(0, 0, this.canvas.width, this.canvas.height);
+        GL.ctx.viewport(0, 0, this.canvas.width, this.canvas.height);
     }
 }

@@ -11,4 +11,5 @@ export abstract class Component {
     public update?(dt: number): void;
     public onDisable?(): void;
     public onDestory?(): void;
+    public render?(): void;
 }

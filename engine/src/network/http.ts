@@ -1,5 +1,5 @@
 export class HTTP {
-    public static async getAsync<T>(url: string, options: RequestInit = {}): Promise<T> {
+    public static async getAsync<T>(url: string, options: RequestInit = {}, responseType: 'json' | 'text' | 'blob' = 'json'): Promise<T> {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -13,7 +13,16 @@ export class HTTP {
             throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
         }
 
-        return response.json();
+        switch (responseType) {
+            case 'json':
+                return response.json() as T;
+            case 'text':
+                return response.text() as T;
+            case 'blob':
+                return response.blob() as T;
+            default:
+                throw new Error(`Unsupported response type: ${responseType}`);
+        }
     }
 
     public static async postAsync<T>(url: string, body: any, options: RequestInit = {}): Promise<T> {
