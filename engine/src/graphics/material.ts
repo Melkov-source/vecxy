@@ -32,7 +32,7 @@ export class Material {
 
         // Передача цвета в шейдер
         const u_color = this._shader.getUniform('u_color');
-        GL.ctx.uniform4fv(u_color.location, this._color.toUint8Array());
+        GL.ctx.uniform4fv(u_color.location, this._color.toFloat32Array());
 
         // Передача матрицы трансформации
         const u_transform_matrix = this._shader.getUniform('u_transform_matrix');

@@ -61,7 +61,7 @@ export class Color {
         ]
     }
 
-    public toUint8Array(): Uint8Array {
-        return new Uint8Array(this.toArray());
+    public toFloat32Array(): Float32Array {
+        return new Float32Array(this.toArray());
     }
 }

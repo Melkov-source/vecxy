@@ -24,11 +24,11 @@ export class Bird extends Component {
 
         this._sprite_renderer = this.node.getComponent(SpriteRenderer)!;
 
-        this._red_bird_sprite = await AssetManager.loadSpriteAsync("./assets/sprites/redbird-midflap.png");
+        this._red_bird_sprite = await AssetManager.loadSpriteAsync("./assets/sprites/favicon.ico");
 
         this._sprite_renderer.setSprite(this._red_bird_sprite);
 
-        this.node.transform.scale = new Vector2(0.01, 0.01);
+        this.node.transform.scale = new Vector2(0.005, 0.005);
 
         this.node.transform.rotation = -30;
     }
