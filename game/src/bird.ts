@@ -4,7 +4,7 @@ export class Bird extends Component {
     private readonly _logger: Logger = new Logger(Bird.name);;
 
     private declare _sprite_renderer: SpriteRenderer;
-    private declare _red_bird_sprite: Sprite;
+    private  _sprites: Sprite[] = [];
 
     public static create(): Bird {
         const node = new Node({
@@ -24,9 +24,15 @@ export class Bird extends Component {
 
         this._sprite_renderer = this.node.getComponent(SpriteRenderer)!;
 
-        this._red_bird_sprite = await AssetManager.loadSpriteAsync("./assets/sprites/redbird-midflap.png");
+        const sprites_load = Promise.all([
+            AssetManager.loadSpriteAsync("./assets/sprites/redbird-midflap.png"),
+            AssetManager.loadSpriteAsync("./assets/sprites/redbird-downflap.png"),
+            AssetManager.loadSpriteAsync("./assets/sprites/redbird-upflap.png"),
+        ]);
 
-        this._sprite_renderer.setSprite(this._red_bird_sprite);
+        this._sprites = await sprites_load;
+
+        this._sprite_renderer.setSprite(this._sprites[0]);
 
         this.node.transform.scale = new Vector2(1, 1);
 
@@ -83,6 +89,10 @@ export class Bird extends Component {
             this._maxRotation = value;
         });
 
+        transformFolder.add(this, '_speed', 0, 360).name('_speed').onChange((value: number) => {
+            this._speed = value;
+        });
+
         // Разворачиваем панель трансформации
         transformFolder.open();
     }
@@ -92,8 +102,24 @@ export class Bird extends Component {
     private _jumpForce: number = 7;
     private _maxRotation: number = 45; // Максимальный угол наклона (в градусах)
     private _firstSpace: boolean = false;
+
+    private _speed = 7.5; // Скорость переключения спрайтов (в кадрах)
+    private _currentIndex = 0;
+    private _frameCount = 0;
     
     public update(): void {
+        if(this._sprites.length === 0) {
+            return;
+        }
+
+        this._frameCount++;
+
+        if (this._frameCount >= this._speed) {
+            this._frameCount = 0;
+            this._currentIndex = (this._currentIndex + 1) % this._sprites.length;
+            this._sprite_renderer.setSprite(this._sprites[this._currentIndex]);
+        }
+
         if(this._firstSpace === false) {
             return;
         }
