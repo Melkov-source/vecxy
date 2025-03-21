@@ -13,7 +13,7 @@ export class Material {
         this._color = Color.white();
     }
 
-    public apply(matrix: Float32Array): void {
+    public apply(projection: Float32Array, matrix: Float32Array): void {
         this._shader.use();
 
         // Получение и привязка атрибутов
@@ -37,6 +37,9 @@ export class Material {
         // Передача матрицы трансформации
         const u_transform_matrix = this._shader.getUniform('u_transform_matrix');
         GL.ctx.uniformMatrix3fv(u_transform_matrix.location, false, matrix);
+
+        const u_projection_matrix = this._shader.getUniform('u_projection_matrix');
+        GL.ctx.uniformMatrix3fv(u_projection_matrix.location, false, projection);
     }
 
     public getShader(): Shader {

@@ -29,7 +29,7 @@ export class SpriteRenderer extends Component {
         this._is_loaded = true;
     }
 
-    public update(dt: number): void {}
+    public update(dt: number): void { }
 
     public render(): void {
         if (this._is_loaded === false || this._sprite === null) {
@@ -39,8 +39,9 @@ export class SpriteRenderer extends Component {
         this.calculateVertices();
 
         const t_matrix = this.createTransformationMatrix();
+        const projectionMatrix = this.createProjectionMatrix();
 
-        this._material.apply(t_matrix);
+        this._material.apply(projectionMatrix, t_matrix);
 
         GL.ctx.drawArrays(GL.ctx.TRIANGLES, 0, 6); // Отрисовка 6 вершин (2 треугольника)
     }
@@ -58,30 +59,69 @@ export class SpriteRenderer extends Component {
         const position: Vector2 = this.node.transform.position;
         const scale: Vector2 = this.node.transform.scale;
         const rotation: number = this.node.transform.rotation;
-    
+
         const matrix = new Float32Array(9);
-    
-        // Применяем поворот
-        const cosR = Math.cos(rotation);
-        const sinR = Math.sin(rotation);
-    
-        // Преобразование в матрицу для фиксированных пиксельных координат
-        // Не нормализуем масштаб относительно экрана, а оставляем его как есть.
-        
-        matrix[0] = cosR * scale.x;  // Масштаб X * cos(поворот)
-        matrix[1] = sinR * scale.x;  // Масштаб X * sin(поворот)
-        matrix[2] = position.x;      // Позиция X (в пикселях)
-    
-        matrix[3] = -sinR * scale.y; // Масштаб Y * -sin(поворот)
-        matrix[4] = cosR * scale.y;  // Масштаб Y * cos(поворот)
-        matrix[5] = position.y;      // Позиция Y (в пикселях)
-    
-        matrix[6] = 0;  // Не используем
-        matrix[7] = 0;  // Не используем
-        matrix[8] = 1;  // Гомогенная координата
-    
+
+        const rotationInRadians = rotation * (Math.PI / 180);
+
+        const cosR = Math.cos(rotationInRadians);
+        const sinR = Math.sin(rotationInRadians);
+
+        matrix[0] = cosR * scale.x;
+        matrix[1] = sinR * scale.x;
+        matrix[2] = 0
+
+        matrix[3] = -sinR * scale.y;
+        matrix[4] = cosR * scale.y;
+        matrix[5] = 0
+
+        matrix[6] = position.x;
+        matrix[7] = position.y;
+        matrix[8] = 1;
+
         return matrix;
     }
+
+    private createProjectionMatrix(): Float32Array {
+        const width = GL.ctx.canvas.width;
+        const height = GL.ctx.canvas.height;
+    
+        // Проверим, что width и height имеют правильные значения
+        console.log(`Canvas width: ${width}, height: ${height}`);
+    
+        // Параметры для ортографической проекции
+        const left = -width / 2;
+        const right = width / 2;
+        const bottom = -height / 2;
+        const top = height / 2;
+    
+        const nearClip = -1;
+        const farClip = 1;
+    
+        // Создаем матрицу проекции 3x3 (ортографическая)
+        const matrix = new Float32Array(9);
+    
+        const lr = 1.0 / (left - right);
+        const bt = 1.0 / (bottom - top);
+        const nf = 1.0 / (nearClip - farClip);
+    
+        // Заполняем матрицу проекции
+        matrix[0] = -2.0 * lr;       // Масштаб по X
+        matrix[1] = 0;               // Нет сдвига по X
+        matrix[2] = (left + right) * lr;  // Сдвиг по X
+    
+        matrix[3] = 0;               // Нет сдвига по Y
+        matrix[4] = -2.0 * bt;       // Масштаб по Y
+        matrix[5] = (top + bottom) * bt;  // Сдвиг по Y
+    
+        matrix[6] = 0;               // Не используется
+        matrix[7] = 0;               // Не используется
+        matrix[8] = 1;               // Гомогенная координата
+    
+        // Возвращаем полученную матрицу проекции
+        return matrix;
+    }
+
 
     private calculateVertices(): void {
         if (this._sprite === null) {
@@ -91,17 +131,21 @@ export class SpriteRenderer extends Component {
         const width = this._sprite.texture.width;
         const height = this._sprite.texture.height;
 
+        // Преобразуем размеры текстуры в диапазон от -1 до 1 для правильного отображения на экране
+        const halfWidth = width / 2;
+        const halfHeight = height / 2;
+
         // Создаем вершины для двух треугольников
         this._vertices = new Float32Array([
-            // Треугольник 1 (верхний левый и правый угол)
-            -0.5 * width,  0.5 * height,  0.0, 1.0,  // Верхний левый
-             0.5 * width,  0.5 * height,  1.0, 1.0,  // Верхний правый
-             0.5 * width, -0.5 * height,  1.0, 0.0,  // Нижний правый
+            // Треугольник 1
+            -halfWidth, halfHeight, 0.0, 1.0,   // Верхний левый
+            halfWidth, halfHeight, 1.0, 1.0,   // Верхний правый
+            halfWidth, -halfHeight, 1.0, 0.0,   // Нижний правый
 
-            // Треугольник 2 (нижний левый и правый угол)
-            -0.5 * width,  -0.5 * height,  0.0, 0.0, // Нижний левый
-            -0.5 * width,   0.5 * height,  0.0, 1.0,  // Верхний левый
-             0.5 * width, -0.5 * height,  1.0, 0.0,  // Нижний правый
+            // Треугольник 2
+            -halfWidth, -halfHeight, 0.0, 0.0,   // Нижний левый
+            -halfWidth, halfHeight, 0.0, 1.0,   // Верхний левый
+            halfWidth, -halfHeight, 1.0, 0.0,   // Нижний правый
         ]);
 
         // Обновляем буфер с вершинами

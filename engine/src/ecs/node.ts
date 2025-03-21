@@ -3,6 +3,10 @@ import { Scene } from "./scene";
 import { Transform } from "./transform";
 
 export class Node {
+    private static __GLOBAK_ID: number = 0;
+
+    public readonly id: number;
+
     public readonly transform: Transform;
     public readonly children: Node[];
     public readonly components: Component[];
@@ -17,6 +21,10 @@ export class Node {
         parent?: Node | null,
         components?: { new(node: Node): Component }[]
     }) {
+        this._is_active = false;
+        
+        this.id = Node.__GLOBAK_ID++;
+
         this.transform = new Transform();
 
         this.children = [];

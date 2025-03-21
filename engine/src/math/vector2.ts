@@ -33,6 +33,11 @@ export class Vector2 {
         }
     }
 
+    public set(x: number, y: number): void {
+        this.x = x;
+        this.y = y;
+    }
+
 
     public getLength(): number {
         const length = Math.sqrt(this.x ** 2 + this.y ** 2);

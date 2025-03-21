@@ -26,6 +26,9 @@ export class GL {
             }
         }
 
+        GL.ctx.enable(GL.ctx.BLEND);
+        GL.ctx.blendFunc(GL.ctx.SRC_ALPHA, GL.ctx.ONE_MINUS_SRC_ALPHA);
+
         (document as any).renderer = this;
 
         this.resize();
