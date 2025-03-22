@@ -95,27 +95,27 @@ export class SpriteRenderer extends Component {
         const bottom = -height / 2;
         const top = height / 2;
     
-        const nearClip = -1;
-        const farClip = 1;
+        const near_clip = -1;
+        const far_clip = 1;
     
         // Создаем матрицу проекции 3x3 (ортографическая)
         const matrix = new Float32Array(9);
     
         const lr = 1.0 / (left - right);
         const bt = 1.0 / (bottom - top);
-        const nf = 1.0 / (nearClip - farClip);
+        const nf = 1.0 / (near_clip - far_clip);
     
         // Заполняем матрицу проекции
         matrix[0] = -2.0 * lr;       // Масштаб по X
         matrix[1] = 0;               // Нет сдвига по X
-        matrix[2] = (left + right) * lr;  // Сдвиг по X
+        matrix[2] =  0 // Сдвиг по X
     
         matrix[3] = 0;               // Нет сдвига по Y
         matrix[4] = -2.0 * bt;       // Масштаб по Y
-        matrix[5] = (top + bottom) * bt;  // Сдвиг по Y
+        matrix[5] = 0  // Сдвиг по Y
     
-        matrix[6] = 0;               // Не используется
-        matrix[7] = 0;               // Не используется
+        matrix[6] = (left + right) * lr;             // Не используется
+        matrix[7] = (top + bottom) * bt;               // Не используется
         matrix[8] = 1;               // Гомогенная координата
     
         // Возвращаем полученную матрицу проекции

@@ -43,6 +43,8 @@ export default {
                 //Sources
                 { src: 'src/*', dest: 'build/src' },
                 { src: 'node_modules/vecxy/src/*', dest: 'build/engine/src' },
+
+                { src: 'node_modules/htmlui/src/*', dest: 'build/htmlui/src' },
             ]
         }),
 
