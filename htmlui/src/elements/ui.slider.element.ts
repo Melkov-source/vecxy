@@ -6,6 +6,7 @@ export class UISliderElement extends UIElement {
     public readonly onChanged: Delegate<[number]> = new Delegate();
 
     private readonly _title: HTMLLabelElement;
+    private readonly _value: HTMLLabelElement;
     private readonly _slider: HTMLInputElement;
     
     private readonly _context: any;
@@ -25,14 +26,18 @@ export class UISliderElement extends UIElement {
 
         this._slider = document.createElement('input');
         this._slider.setAttribute('type', 'range');
-        
+
+        this._value = document.createElement('label');
+
         this._slider.min = property.min.toString();
         this._slider.max = property.max.toString();
+        this._slider.step = 0.1.toString();
 
         this._slider.addEventListener('input', this.onSliderChange.bind(this));
 
         root.appendChild(this._title);
         root.appendChild(this._slider);
+        root.appendChild(this._value);
 
         this.update();
     }
@@ -40,6 +45,8 @@ export class UISliderElement extends UIElement {
     public update(): void {
         const value = this._context[this._property_meta.name];
         this._slider.value = value;
+
+        this._value.textContent = value;
     }
 
     private onSliderChange(): void {
@@ -48,6 +55,7 @@ export class UISliderElement extends UIElement {
         
         if (this._property_meta.type === POROPERTY_TYPE.NUMBER) {
             this._context[this._property_meta.name] = newValue;
+            this._value.textContent = this._slider.value;
         }
     }
 }

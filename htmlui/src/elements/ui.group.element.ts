@@ -15,6 +15,13 @@ export class UIGroupElement extends UIElement {
 
         super(root);
 
+        const title = document.createElement('label');
+
+        title.textContent = name;
+        title.style.color = "white";
+
+        this.root.appendChild(title);
+
         this.name = name;
     }
 
