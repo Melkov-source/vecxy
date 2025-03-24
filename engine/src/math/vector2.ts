@@ -1,9 +1,13 @@
+import { HTMLUI, POROPERTY_TYPE, VIEW_TYPE, _decorator } from "htmlui";
+
+const { property } = _decorator;
+
 export class Vector2 {
     public static one(): Vector2 { return new Vector2(1, 1); }
     public static zero(): Vector2 { return new Vector2(0, 0); }
 
-    public declare x: number;
-    public declare y: number;
+    @property(POROPERTY_TYPE.NUMBER, VIEW_TYPE.KEY_VALUE, 0, 100) public declare x: number;
+    @property(POROPERTY_TYPE.NUMBER, VIEW_TYPE.KEY_VALUE, 0, 100) public declare y: number;
 
     public constructor();
     public constructor(vector: Vector2)

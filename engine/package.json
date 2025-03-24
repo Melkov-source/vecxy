@@ -13,7 +13,8 @@
     "dependencies": {
         "gl-matrix": "^3.4.3",
         "reflect-metadata": "^0.2.2",
-        "tslib": "^2.8.1"
+        "tslib": "^2.8.1",
+        "htmlui": "file:../htmlui"
     },
     "devDependencies": {
         "@rollup/plugin-typescript": "^12.1.2",
