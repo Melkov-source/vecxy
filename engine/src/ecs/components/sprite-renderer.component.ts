@@ -86,9 +86,6 @@ export class SpriteRenderer extends Component {
         const width = GL.ctx.canvas.width;
         const height = GL.ctx.canvas.height;
     
-        // Проверим, что width и height имеют правильные значения
-        console.log(`Canvas width: ${width}, height: ${height}`);
-    
         // Параметры для ортографической проекции
         const left = -width / 2;
         const right = width / 2;

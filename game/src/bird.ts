@@ -1,4 +1,4 @@
-import { HTMLUI, POROPERTY_TYPE, _decorator } from "htmlui";
+import { HTMLUI, POROPERTY_TYPE, VIEW_TYPE, _decorator } from "htmlui";
 import { AssetManager, Component, Scene, SpriteRenderer, Node, Sprite, Vector2, Logger, AsyncUtils } from "vecxy";
 
 const { property } = _decorator;
@@ -11,19 +11,18 @@ export class Bird extends Component {
     private _sprites: Sprite[] = [];
 
     // Controller
-    private _gravity: number = 0.2;
-    private _velocityY: number = 0;
-    private _jumpForce: number = 7;
-    private _maxRotation: number = 45;
+    @property(POROPERTY_TYPE.NUMBER, VIEW_TYPE.KEY_VALUE, 0, 100) private _gravity: number = 0.2;
+    @property(POROPERTY_TYPE.NUMBER, VIEW_TYPE.KEY_VALUE, 0, 100) private _jumpForce: number = 7;
+    @property(POROPERTY_TYPE.NUMBER, VIEW_TYPE.KEY_VALUE, 0, 100) private _maxRotation: number = 45;
+
+    @property(POROPERTY_TYPE.NUMBER, VIEW_TYPE.KEY_VALUE, 0, 100) private _velocityY: number = 0;
     private _firstSpace: boolean = false;
 
     // Animation
-    @property(POROPERTY_TYPE.NUMBER) private _speedAnimation = 7.5;
+    @property(POROPERTY_TYPE.NUMBER, VIEW_TYPE.SLIDER, 0, 10) private _speedAnimation = 7.5;
+
     private _currentIndex = 0;
     private _frameCount = 0;
-
-    // Test
-    @property(POROPERTY_TYPE.NUMBER) private _testNumber: number = 0;
 
 
     public static create(): Bird {
@@ -95,8 +94,6 @@ export class Bird extends Component {
 
         let rotation = (this._velocityY / this._jumpForce) * this._maxRotation;
         rotation = Math.max(-this._maxRotation, Math.min(this._maxRotation, rotation));
-
-        console.log(JSON.stringify(this.node.transform))
 
         this.node.transform.rotation = rotation;
     }

@@ -50,7 +50,7 @@ export class GL {
 
         const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
 
-        const display_width = Math.round(rect.width * dpr);
+        const display_width = Math.round(580 * dpr);
         const display_height = Math.round(rect.height * dpr);
 
         const need_resize = this.canvas.width !== display_width || this.canvas.height !== display_height;

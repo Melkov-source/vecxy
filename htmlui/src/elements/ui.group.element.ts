@@ -1,11 +1,14 @@
-import { HTMLUI, POROPERTY_TYPE, PropertyMeta } from "../htmlui";
+import { HTMLUI, POROPERTY_TYPE, PropertyMeta, VIEW_TYPE } from "../htmlui";
 import { UIElement } from "./ui-element";
 import { UIKeyValueElement } from "./ui.key-value.element";
+import { UISliderElement } from "./ui.slider.element";
 
 export class UIGroupElement extends UIElement {
     public readonly name: string;
 
     private _contexts: Map<object, PropertyMeta[]> = new Map();
+
+    private readonly _elements: UIElement[] = [];
 
     public constructor(name: string) {
         const root = document.createElement('div');
@@ -13,6 +16,17 @@ export class UIGroupElement extends UIElement {
         super(root);
 
         this.name = name;
+    }
+
+    public update(): void {
+        for (let index = 0, count = this._elements.length; index < count; ++index) {
+            const element = this._elements[index];
+
+            if (element.update) {
+                element.update();
+            }
+
+        }
     }
 
     public bindProperties(context: any): void {
@@ -27,17 +41,24 @@ export class UIGroupElement extends UIElement {
 
             switch (property_meta.type) {
                 case POROPERTY_TYPE.NUMBER:
-                    const key_value_element = new UIKeyValueElement();
+                    let element: UIElement;
 
-                    key_value_element.setValue(context[property_meta.name]);
+                    switch (property_meta.view) {
+                        case VIEW_TYPE.KEY_VALUE:
+                            element = new UIKeyValueElement(context, property_meta);
+                            break;
 
-                    key_value_element.onChanged.add((v) => {
-                        console.log(`p: ${property_meta.name}, v: ${v}`);
+                        case VIEW_TYPE.SLIDER:
+                            element = new UISliderElement(context, property_meta);
+                            break;
 
-                        context[property_meta.name] = Number(v);
-                    }, this);
+                        default:
+                            continue;
+                    }
 
-                    this.root.appendChild(key_value_element.root);
+                    this.root.appendChild(element.root);
+
+                    this._elements.push(element);
 
                     metas.push(property_meta);
                     break;

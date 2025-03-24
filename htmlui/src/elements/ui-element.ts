@@ -4,4 +4,6 @@ export class UIElement {
     public constructor(root: HTMLElement) {
         this.root = root;
     }
+
+    public update?(): void;
 }

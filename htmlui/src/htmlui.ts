@@ -6,12 +6,14 @@ export * from './elements/ui-element'
 export * from './elements/ui.group.element'
 
 import { UIGroupElement } from './elements/ui.group.element';
-import { POROPERTY_TYPE, PropertyMeta } from './property.meta';
+import { POROPERTY_TYPE, PropertyMeta, VIEW_TYPE } from './property.meta';
 
 export class HTMLUI {
     public static declare root: HTMLDivElement;
 
     private static readonly _contexts: Map<any, PropertyMeta[]> = new Map();
+
+    private static readonly _groups: UIGroupElement[] = [];
 
     public static init(): void {
         this.root = document.createElement("div");
@@ -25,11 +27,46 @@ export class HTMLUI {
             #htmlui {
                 position: fixed;
                 top: 0;
-                left: 0;
-                width: 100vw;
+                left: 1;
+                width: 400px;
                 height: 100vh;
                 background: rgba(0, 0, 0, 0);
                 z-index: 999999;
+            }
+
+            #key-value {
+                display: flex;
+                align-items: center;
+                padding: 2px;
+                color: white;
+                gap: 8px;
+            }
+
+            #key-value label {
+                flex: 0 0 100px;
+                text-align: right;
+            }
+
+            #key-value input {
+                flex: 1;
+                background: transparent;
+                border: 1px solid #777;
+                color: white;
+                padding: 2px 4px;
+                outline: none;
+            }
+
+            #slider {
+                display: flex;
+                align-items: center;
+                padding: 2px;
+                color: white;
+                gap: 8px;
+            }
+
+            #slider label {
+                flex: 0 0 100px;
+                text-align: right;
             }
         `;
 
@@ -37,8 +74,10 @@ export class HTMLUI {
     }
 
     public static update(): void {
-        for (const context of this._contexts) {
+        for (let index = 0, count = this._groups.length; index < count; ++index) {
+            const group = this._groups[index];
 
+            group.update();
         }
     }
 
@@ -47,14 +86,19 @@ export class HTMLUI {
 
         this.root.appendChild(group.root);
 
+        this._groups.push(group);
+
         return group;
     }
 
-    public static registerProperty(context: any, property_key: string, type: POROPERTY_TYPE): void {
+    public static registerProperty(context: any, property_key: string, type: POROPERTY_TYPE, view: VIEW_TYPE, min: number, max: number): void {
         const property: PropertyMeta = {
             ctx_prototype: context,
             name: property_key,
-            type: type
+            type: type,
+            view: view,
+            min: min,
+            max: max
         };
 
         if (this._contexts.has(context) === false) {
