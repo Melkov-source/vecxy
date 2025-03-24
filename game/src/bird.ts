@@ -64,8 +64,14 @@ export class Bird extends Component {
 
     private setupGUI(): void {
         const g_bird = HTMLUI.createGroup(`Bird: ${this.node.id}`);
+        const g_transform = HTMLUI.createGroup(`Transform`);
+        const g_position = HTMLUI.createGroup(`Position`);
+        const g_scale = HTMLUI.createGroup(`Scale`);
 
         g_bird.bindProperties(this);
+        g_transform.bindProperties(this.node.transform);
+        g_position.bindProperties(this.node.transform.position);
+        g_scale.bindProperties(this.node.transform.scale);
     }
 
     public update(): void {
