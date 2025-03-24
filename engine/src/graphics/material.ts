@@ -13,33 +13,16 @@ export class Material {
         this._color = Color.white();
     }
 
-    public apply(projection: Float32Array, matrix: Float32Array): void {
+    public apply(): void {
         this._shader.use();
 
-        // Получение и привязка атрибутов
-        const a_position = this._shader.getAttribute('a_position');
-        GL.ctx.vertexAttribPointer(a_position.location, 2, GL.ctx.FLOAT, false, 4 * 4, 0);
-        GL.ctx.enableVertexAttribArray(a_position.location);
+        this._texture?.activate();
 
-        const a_texture_coords = this._shader.getAttribute('a_texture_coords');
-        GL.ctx.vertexAttribPointer(a_texture_coords.location, 2, GL.ctx.FLOAT, false, 4 * 4, 2 * 4);  // Сдвиг на 2 элемента
-        GL.ctx.enableVertexAttribArray(a_texture_coords.location);
-
-        // Активируем текстуру и передаем в шейдер
-        this._texture?.activate();  // Передаем текстуру в активный канал
         const u_texture = this._shader.getUniform('u_texture');
-        GL.ctx.uniform1i(u_texture.location, 0);  // Текстура 0
+        GL.ctx.uniform1i(u_texture.location, 0);
 
-        // Передача цвета в шейдер
         const u_color = this._shader.getUniform('u_color');
         GL.ctx.uniform4fv(u_color.location, this._color.toFloat32Array());
-
-        // Передача матрицы трансформации
-        const u_transform_matrix = this._shader.getUniform('u_transform_matrix');
-        GL.ctx.uniformMatrix3fv(u_transform_matrix.location, false, matrix);
-
-        const u_projection_matrix = this._shader.getUniform('u_projection_matrix');
-        GL.ctx.uniformMatrix3fv(u_projection_matrix.location, false, projection);
     }
 
     public getShader(): Shader {

@@ -3,6 +3,7 @@ export * from './game.interface';
 
 //Core
 export * from './engine';
+export * from './screen'
 
 //Math
 export * from './math/vector2';

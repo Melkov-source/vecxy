@@ -1,4 +1,5 @@
 import { Scene } from "../ecs/scene";
+import { Screen } from "../screen";
 
 const WEBGL_CONTEXT: string = 'webgl';
 const WEBGL2_CONTEXT: string = 'webgl2';
@@ -26,6 +27,8 @@ export class GL {
             }
         }
 
+        Screen.setCanvas(this.canvas);
+
         GL.ctx.enable(GL.ctx.BLEND);
         GL.ctx.blendFunc(GL.ctx.SRC_ALPHA, GL.ctx.ONE_MINUS_SRC_ALPHA);
 
@@ -50,7 +53,7 @@ export class GL {
 
         const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
 
-        const display_width = Math.round(580 * dpr);
+        const display_width = Math.round(rect.width * dpr);
         const display_height = Math.round(rect.height * dpr);
 
         const need_resize = this.canvas.width !== display_width || this.canvas.height !== display_height;
