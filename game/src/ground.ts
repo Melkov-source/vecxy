@@ -27,7 +27,9 @@ export class Ground extends Component {
 
         const height_half = Screen.height / 2;
 
-        const height_sprite_half = sprite.texture.height / 2;
+        const height_sprite_half = (sprite.texture.height * 1.72) / 2;
+
+        console.log(sprite.texture.height);
 
         const y_pos = height_half - height_sprite_half;
 
