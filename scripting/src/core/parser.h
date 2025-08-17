@@ -3,7 +3,8 @@
 
 #include "token.h"
 #include "ast.h"
+#include "script.h"
 
-struct node *parse_tokens(const struct token *tokens);
+struct node *parse_tokens(struct script *script);
 
 #endif //SCRIPTING_PARSER_H

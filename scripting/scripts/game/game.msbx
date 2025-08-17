@@ -1,0 +1,12 @@
+﻿{
+    "box": "game",
+    "scripts": {
+        "menu": "./menu.ms"
+    },
+    "boxes": {
+        "system": "#system",
+        "vecxy": "#vecxy",
+        "math": "./math",
+        "game": "./game"
+    }
+}

@@ -1,8 +1,9 @@
 ﻿#ifndef SCRIPTING_LEXER_H
 #define SCRIPTING_LEXER_H
 
+#include "script.h"
 #include "token.h"
 
-struct token *lexer_start_process(const char *script);
+void lex(struct script *script);
 
 #endif //SCRIPTING_LEXER_H

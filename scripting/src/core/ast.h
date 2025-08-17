@@ -1,16 +1,15 @@
-﻿//
-// Created by melkov on 17.08.2025.
-//
-
-#ifndef SCRIPTING_AST_H
+﻿#ifndef SCRIPTING_AST_H
 #define SCRIPTING_AST_H
 
 enum node_type {
     NODE_TYPE_FUNCTION,
     NODE_TYPE_RETURN,
-    NODE_TYPE_NUMBER,
     NODE_TYPE_CALL,
-    NODE_TYPE_STRING
+    NODE_TYPE_NUMBER,
+    NODE_TYPE_STRING,
+    NODE_TYPE_VAR_DECL,   // int x;
+    NODE_TYPE_ASSIGN,     // x = 42;
+    NODE_TYPE_VAR_REF     // использование переменной
 };
 
 struct node {

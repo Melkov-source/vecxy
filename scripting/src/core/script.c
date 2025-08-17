@@ -1,7 +1,6 @@
 ﻿#include "script.h"
 
 #include "../common/file.h"
-#include "../core/lexer.h"
 
 struct script * script_create(const char *path) {
     const struct file_info *file = file_load(path);
@@ -17,10 +16,6 @@ struct script * script_create(const char *path) {
     }
 
     script->source = file->text;
-
-    const struct token *tokens = lexer_start_process(script->source);
-
-    script->tokens = tokens;
 
     return script;
 }

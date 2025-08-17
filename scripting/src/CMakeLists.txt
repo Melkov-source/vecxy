@@ -11,6 +11,11 @@
         core/interpreter.c
         core/interpreter.h
         core/ast.h
+        core/config.h
+        core/module.c
+        core/module.h
+        core/box.c
+        core/box.h
 )
 
 target_include_directories(scripting PRIVATE

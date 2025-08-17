@@ -1,8 +1,4 @@
-﻿//
-// Created by melkov on 17.08.2025.
-//
-
-#ifndef SCRIPTING_SCRIPT_H
+﻿#ifndef SCRIPTING_SCRIPT_H
 #define SCRIPTING_SCRIPT_H
 
 struct script {
