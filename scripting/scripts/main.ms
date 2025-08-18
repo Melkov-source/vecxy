@@ -1,6 +1,7 @@
-﻿#import "system" { log };
-#import "math" { vec2 };
+﻿#import "debug" { log };
 
 fn::int main() {
+    debug.log("Hello World");
+
     return 0;
 }

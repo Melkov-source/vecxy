@@ -1,4 +1,4 @@
-﻿struct vec2 {
+﻿pack vec2 {
 #public:
     float x;
     float y;

@@ -1,8 +1,8 @@
-﻿#import "system" { log }
+﻿#import "debug" { log }
 #import "vecxy" { component, #field };
 #import "vecxy::ui" { button, label };
 
-class menu : component {
+pack menu {
 #private:
     #field button start_button;
 

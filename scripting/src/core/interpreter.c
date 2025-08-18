@@ -30,7 +30,7 @@ int execute_node(const struct node *node) {
 }
 
 int interpreter_execute(const struct script *script) {
-    lex(script);
+    lex2(script);
 
     struct node *main_func = parse_tokens(script);
 
