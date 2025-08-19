@@ -1,7 +1,6 @@
 ﻿add_executable(scripting
         main.c
         core/lexer.c
-        utils/list.c
         common/file.c
         common/file.h
         core/parser.c

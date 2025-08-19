@@ -29,6 +29,25 @@ void list_add(struct list *list, void *data) {
     list->count++;
 }
 
+void *list_get(struct list *list, size_t index) {
+    if (index >= list->count) {
+        return NULL; // индекс вне диапазона
+    }
+
+    struct list_node *current = list->head;
+    size_t i = 0;
+
+    while (current != NULL) {
+        if (i == index) {
+            return current->data;
+        }
+        current = current->next;
+        i++;
+    }
+
+    return NULL;
+}
+
 void list_free(struct list *list, void(*free_data)(void *)) {
     struct list_node *current = list->head;
 

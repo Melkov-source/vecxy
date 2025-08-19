@@ -2,4 +2,6 @@
         main.c
         file.c
         file.h
+        list.c
+        list.h
 )

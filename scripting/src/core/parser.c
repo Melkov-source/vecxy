@@ -7,7 +7,7 @@
 
 struct node *parse_expression(const struct token **t_ptr);
 
-static char *strndup_custom(const char *s, size_t n) {
+static char *__strndup(const char *s, size_t n) {
     char *p = malloc(n + 1);
     if (!p) return NULL;
     memcpy(p, s, n);
@@ -37,7 +37,7 @@ struct node *parse_tokens(struct  script *script) {
 
     struct node *func_node = malloc(sizeof(struct node));
     func_node->type = NODE_TYPE_FUNCTION;
-    func_node->name = strndup_custom(t->start, t->length);
+    func_node->name = __strndup(t->start, t->length);
     func_node->child = NULL;
     func_node->next = NULL;
 
@@ -105,7 +105,7 @@ struct node *parse_expression(const struct token **t_ptr) {
 
         struct node *decl = malloc(sizeof(struct node));
         decl->type = NODE_TYPE_VAR_DECL;
-        decl->name = strndup_custom(var_name, var_len);
+        decl->name = __strndup(var_name, var_len);
         decl->child = decl->next = NULL;
 
         if (t->type == TOKEN_TYPE_OPERATOR && *t->start == '=') {
@@ -140,7 +140,7 @@ struct node *parse_expression(const struct token **t_ptr) {
 
             struct node *assign = malloc(sizeof(struct node));
             assign->type = NODE_TYPE_ASSIGN;
-            assign->name = strndup_custom(name_start, name_len);
+            assign->name = __strndup(name_start, name_len);
 
             struct node *val = malloc(sizeof(struct node));
             val->type = NODE_TYPE_NUMBER;
@@ -162,7 +162,7 @@ struct node *parse_expression(const struct token **t_ptr) {
         if (t->type == TOKEN_TYPE_OPERATOR && *t->start == '(') {
             struct node *call_node = malloc(sizeof(struct node));
             call_node->type = NODE_TYPE_CALL;
-            call_node->name = strndup_custom(name_start, name_len);
+            call_node->name = __strndup(name_start, name_len);
             call_node->child = call_node->next = NULL;
 
             t++; // пропускаем '('
