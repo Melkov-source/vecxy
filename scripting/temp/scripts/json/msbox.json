@@ -1,0 +1,10 @@
+{
+    "name": "json",
+
+    "scripts": [
+        "./json.ms",
+        "./lexer.ms",
+        "./parser.ms",
+        "./token.ms"
+    ]
+}

@@ -1,5 +1,5 @@
 ﻿{
-    "box": "math",
+    "name": "math",
     "scripts": {
         "vec2": "./vec2.ms"
     }

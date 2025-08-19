@@ -43,11 +43,36 @@ enum keyword_type {
     keyword_type_int,
     keyword_type_float,
     keyword_type_string,
+    keyword_type_null,
 
     keyword_type_import,
     keyword_type_export,
 
     keyword_type_pack,
+    keyword_type_mix,
+    keyword_type_kind,
+
+    keyword_type_new,
+    keyword_type_ctor,
+    keyword_type_lock,
+    
+    keyword_type_public,
+    keyword_type_private,
+    keyword_type_protected,
+    keyword_type_static,
+    keyword_type_const,
+
+    keyword_type_add,
+    keyword_type_is,
+    keyword_type_to,
+    keyword_type_of,
+
+    keyword_type_for,
+    keyword_type_while,
+    keyword_type_do,
+
+    keyword_type_break,
+    keyword_type_continue,
 };
 
 struct token {
@@ -73,7 +98,36 @@ int main(void) {
 
 
 struct token *lex(char *code) {
-    struct token *token = malloc(sizeof(struct token));
+    struct token *tokens = malloc(sizeof(struct token) * 10);
 
-    return token;
+    int count = 0;
+
+    char *p = code;
+
+    while (*p)
+    {
+        if(isspace(*p)) {
+            p++;
+
+            continue;
+        }
+
+        if(*p == '#') {
+            struct token *token = malloc(sizeof(struct token));
+
+            token->type = token_type_hash;
+            token->identifier = identifier_type_none;
+            token->keyword = keyword_type_none;
+            token->value_string = strndup(p, 1);;
+
+            tokens[count++] = *token;
+
+            p++;
+        }
+
+        p++;
+    }
+    
+
+    return &tokens;
 }

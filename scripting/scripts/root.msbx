@@ -1,5 +1,5 @@
 ﻿{
-    "box": "root",
+    "name": "root",
     "entry": "./main.ms",
     "boxes": {
         "system": "ms:system",
