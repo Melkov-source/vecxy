@@ -11,4 +11,6 @@ struct parser {
 
 const struct ast_node *parser_parse(const struct list *tokens);
 
+typedef struct ast_node* (*parser_func)(struct parser*);
+
 #endif // SCRIPTING_PARSER_H
