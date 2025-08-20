@@ -3,7 +3,7 @@
 #include "parser.h"
 
 int main(void) {
-    struct file_info *file = file_load("E:\\Projects\\vecxy\\scripting\\temp\\scripts\\main.ms");
+    struct file_info *file = file_load("E:\\Projects\\vecxy\\scripting\\resources\\main.ms");
 
     const char *code = file->text;
 

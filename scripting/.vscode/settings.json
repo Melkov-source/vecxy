@@ -17,6 +17,9 @@
         "lexer.h": "c",
         "text_encoding": "c",
         "typeinfo": "c",
-        "module.h": "c"
+        "module.h": "c",
+        "console.h": "c",
+        "math.h": "c",
+        "file.h": "c"
     }
 }
