@@ -1,7 +1,8 @@
-﻿#include "file.h"
-#include "lexer.h"
-#include "parser.h"
-#include "module.h"
+﻿#include "common/file.h"
+
+#include "core/lexer.h"
+#include "core/parser.h"
+#include "core/module.h"
 
 int main(void) {
     modules_init();

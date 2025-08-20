@@ -1,4 +1,4 @@
-﻿#include "token.h"
+﻿#include "core/token.h"
 
 #include <stdio.h>
 #include <string.h>

@@ -1,4 +1,0 @@
-﻿#ifndef SCRIPTING_AST_H
-#define SCRIPTING_AST_H
-
-#endif //SCRIPTING_AST_H

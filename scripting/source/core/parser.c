@@ -1,7 +1,6 @@
 ﻿#include "core/parser.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 // глобальные
 static const struct list *g_tokens = NULL;

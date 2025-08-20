@@ -1,8 +1,8 @@
 #ifndef SCRIPTING_PARSER_H
 #define SCRIPTING_PARSER_H
 
-#include "list.h"
-#include "token.h"
+#include "common/list.h"
+#include "core/token.h"
 
 enum node_type {
     NODE_PROGRAM,

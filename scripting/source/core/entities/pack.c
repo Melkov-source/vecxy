@@ -1,6 +1,6 @@
-#include "pack.h"
-#include "scope.h"
-#include "list.h"
+#include "core/entities/pack.h"
+#include "core/entities/scope.h"
+#include "common/list.h"
 
 struct pack *pack_create(char *name, struct scope *scope_parent)
 {

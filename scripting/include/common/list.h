@@ -1,8 +1,4 @@
-﻿//
-// Created by melkov on 15.08.2025.
-//
-
-#ifndef SCRIPTING_LIST_H
+﻿#ifndef SCRIPTING_LIST_H
 #define SCRIPTING_LIST_H
 
 #include <stdlib.h>

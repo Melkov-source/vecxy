@@ -1,16 +1,24 @@
 ﻿set(SOURCES
-    main.c
+        main.c
 
-    core/lexer.c
-    core/parser.c
-    core/token.c
+        #core
+        core/lexer.c
+        core/parser.c
+        core/token.c
+        core/module.c
 
-    core/entities/fn.c
-    core/entities/pack.c
-    core/entities/scope.c
+        #entities
+        core/entities/fn.c
+        core/entities/pack.c
+        core/entities/scope.c
 
-    common/file.c
-    common/list.c
+        #common
+        common/file.c
+        common/list.c
+
+        #modules
+        modules/console.c
+        modules/math.c
 )
 
 add_executable(scripting ${SOURCES})

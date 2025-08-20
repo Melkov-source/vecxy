@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "module.h"
+#include "core/module.h"
 
 #include "modules/console.h"
 #include "modules/math.h"

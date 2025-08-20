@@ -1,7 +1,7 @@
 #ifndef SCRIPTING_MODULE_H
 #define SCRIPTING_MODULE_H
 
-#include "list.h"
+#include "common/list.h"
 
 struct module_export_entity
 {
