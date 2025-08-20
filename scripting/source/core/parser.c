@@ -1,44 +1,46 @@
-﻿#include "core/parser.h"
+﻿#include <stdio.h>
 
-static struct node *make_node(enum node_type type);
-void free_node(struct node *n);
+#include "core/parser.h"
+#include "utils/parser.h"
 
-static struct node *parse_function(void);
-static struct node *parse_statement(void);
-static struct node *parse_expression(void);
+static struct ast_node *parse_function(struct parser_state *state);
+static struct ast_node *parse_statement(struct parser_state *state);
+static struct ast_node *parse_expression(struct parser_state *state);
 
-// --- parse root ---
-struct node *parse(const struct list *tokens) {
-    g_tokens = tokens;
-    g_pos = 0;
+struct ast_node *parse(const struct list *tokens) {
 
-    struct node *program = make_node(NODE_PROGRAM);
+    struct parser_state *state = malloc(sizeof(struct parser_state));
+    state->tokens = tokens;
+    state->index = 0;
 
-    while (!is_at_end()) {
-        struct token *t = peek();
+    struct ast_node *program = ast_node_create(AST_NODE_TYPE_PROGRAM);
+
+    while (!parser_is_at_end(state)) {
+        const struct token *t = parser_get_current(state);
+
         if (t->type == TOKEN_TYPE_HASH) {
-            advance();
+            parser_continue(state);
 
-            if (check(TOKEN_TYPE_IDENTIFIER) &&check_kw(KEYWORD_TYPE_IMPORT)) {
-                struct node *node_import = make_node(NODE_IMPORT);
-                advance();
+            if (parser_check_current_type(state, TOKEN_TYPE_IDENTIFIER) &&parser_check_keyword(state, KEYWORD_TYPE_IMPORT)) {
+                struct ast_node *node_import = ast_node_create(AST_NODE_TYPE_IMPORT);
+                parser_continue(state);
 
                 list_add(&program->children, node_import);
 
-                if (check(TOKEN_TYPE_IDENTIFIER)) {
-                    struct node *node_module = make_node(NODE_IMPORT_MODULE);
-                    const struct token *module_name = advance();
+                if (parser_check_current_type(state, TOKEN_TYPE_IDENTIFIER)) {
+                    struct ast_node *node_module = ast_node_create(AST_NODE_TYPE_IMPORT_MODULE);
+                    const struct token *module_name = parser_continue(state);
 
                     node_module->string_value = module_name->value_string;
 
                     list_add(&node_import->children, node_module);
 
-                    consume(TOKEN_TYPE_SEMICOLON, ";");
+                    parser_consume_type(state, TOKEN_TYPE_SEMICOLON, ";");
                 }
             }
         }
         else if (t->keyword == KEYWORD_TYPE_FN) {
-            struct node *fn = parse_function();
+            struct ast_node *fn = parse_function(state);
             list_add(&program->children, fn);
         }
         else {
@@ -51,82 +53,82 @@ struct node *parse(const struct list *tokens) {
 }
 
 // --- parse function ---
-static struct node *parse_function(void) {
-    consume_kw(KEYWORD_TYPE_FN, "fn");
+static struct ast_node *parse_function(struct parser_state *state) {
+    parser_consume_keyword(state, KEYWORD_TYPE_FN, "fn");
 
-    consume(TOKEN_TYPE_TO, "'::' or 'to'");
+    parser_consume_type(state, TOKEN_TYPE_TO, "'::' or 'to'");
 
     // return type
-    struct token *t = peek();
+    const struct token *t = parser_get_current(state);
     char *ret_type = NULL;
-    if (t->keyword == KEYWORD_TYPE_INT) { ret_type = "int"; advance(); }
-    else if (t->keyword == KEYWORD_TYPE_STRING) { ret_type = "string"; advance(); }
+    if (t->keyword == KEYWORD_TYPE_INT) { ret_type = "int"; parser_continue(state); }
+    else if (t->keyword == KEYWORD_TYPE_STRING) { ret_type = "string"; parser_continue(state); }
     else ret_type = "auto";
 
     // function name
-    struct token *nameTok = consume(TOKEN_TYPE_IDENTIFIER, "identifier");
-    struct node *fn = make_node(NODE_FUNCTION);
+    struct token *nameTok = parser_consume_type(state, TOKEN_TYPE_IDENTIFIER, "identifier");
+    struct ast_node *fn = ast_node_create(AST_NODE_TYPE_FUNCTION);
     fn->name = nameTok->value_string;
     fn->return_type = ret_type;
 
-    consume(TOKEN_TYPE_LBRACKET, "(");
+    parser_consume_type(state, TOKEN_TYPE_LBRACKET, "(");
     // TODO: Parse parameters
-    consume(TOKEN_TYPE_RBRACKET, ")");
-    consume(TOKEN_TYPE_LBRACE, "{");
+    parser_consume_type(state, TOKEN_TYPE_RBRACKET, ")");
+    parser_consume_type(state, TOKEN_TYPE_LBRACE, "{");
 
-    while (!check(TOKEN_TYPE_RBRACE) && !is_at_end()) {
-        struct node *stmt = parse_statement();
+    while (!parser_check_current_type(state, TOKEN_TYPE_RBRACE) && !parser_is_at_end(state)) {
+        struct ast_node *stmt = parse_statement(state);
         if (stmt) list_add(&fn->children, stmt);
     }
 
-    consume(TOKEN_TYPE_RBRACE, "}");
+    parser_consume_type(state, TOKEN_TYPE_RBRACE, "}");
     return fn;
 }
 
 // --- parse statement ---
-static struct node *parse_statement(void) {
+static struct ast_node *parse_statement(struct parser_state *state) {
     // return
-    if (check_kw(KEYWORD_TYPE_RETURN)) {
-        advance();
+    if (parser_check_keyword(state, KEYWORD_TYPE_RETURN)) {
+        parser_continue(state);
 
-        struct node *expr = parse_expression();
-        struct node *r = make_node(NODE_RETURN);
+        struct ast_node *expr = parse_expression(state);
+        struct ast_node *r = ast_node_create(AST_NODE_TYPE_RETURN);
 
         list_add(&r->children, expr);
-        consume(TOKEN_TYPE_SEMICOLON, ";");
+        parser_consume_type(state, TOKEN_TYPE_SEMICOLON, ";");
         return r;
     }
 
     // int x = 5;
-    if (check_kw(KEYWORD_TYPE_INT) || check_kw(KEYWORD_TYPE_STRING)) {
-        struct token *kw = advance();
+    if (parser_check_keyword(state, KEYWORD_TYPE_INT) || parser_check_keyword(state, KEYWORD_TYPE_STRING)) {
+        struct token *kw = parser_continue(state);
         char *type = kw->keyword == KEYWORD_TYPE_INT ? "int" : "string";
-        struct token *nameTok = consume(TOKEN_TYPE_IDENTIFIER, "identifier");
+        struct token *nameTok = parser_consume_type(state, TOKEN_TYPE_IDENTIFIER, "identifier");
 
-        struct node *decl = make_node(NODE_VAR_DECL);
+        struct ast_node *decl = ast_node_create(AST_NODE_TYPE_VAR_DECL);
         decl->name = nameTok->value_string;
         decl->return_type = type;
 
-        if (check(TOKEN_TYPE_ASSIGN)) {
-            advance();
-            struct node *val = parse_expression();
+        if (parser_check_current_type(state, TOKEN_TYPE_ASSIGN)) {
+            parser_continue(state);
+            struct ast_node *val = parse_expression(state);
             list_add(&decl->children, val);
         }
 
-        consume(TOKEN_TYPE_SEMICOLON, ";");
+        parser_consume_type(state, TOKEN_TYPE_SEMICOLON, ";");
         return decl;
     }
 
-    if (check(TOKEN_TYPE_IDENTIFIER) && peek_next()->type == TOKEN_TYPE_TO) {
-        struct token *module_name = peek();
-        struct node *node_call_module = make_node(NODE_CALL_MODULE);
+    if (parser_check_current_type(state, TOKEN_TYPE_IDENTIFIER) && parser_get_next(state)->type == TOKEN_TYPE_TO) {
+        const struct token *module_name = parser_get_current(state);
+        struct ast_node *node_call_module = ast_node_create(AST_NODE_TYPE_CALL_MODULE);
         node_call_module->string_value = module_name->value_string;
 
-        advance();
+        parser_continue(state);
 
-        advance(); // ::
+        parser_continue(state); // ::
 
-        struct node *node_call = parse_statement();
+        struct ast_node *node_call = parse_statement(state);
 
         list_add(&node_call_module->children, node_call);
 
@@ -134,69 +136,52 @@ static struct node *parse_statement(void) {
     }
 
     // вызов функции
-    if (check(TOKEN_TYPE_IDENTIFIER) && peek_next()->type == TOKEN_TYPE_LBRACKET) {
-        struct token *nameTok = advance();
-        struct node *call = make_node(NODE_CALL);
+    if (parser_check_current_type(state, TOKEN_TYPE_IDENTIFIER) && parser_get_next(state)->type == TOKEN_TYPE_LBRACKET) {
+        struct token *nameTok = parser_continue(state);
+        struct ast_node *call = ast_node_create(AST_NODE_TYPE_CALL);
         call->name = nameTok->value_string;
-        consume(TOKEN_TYPE_LBRACKET, "(");
-        while (!check(TOKEN_TYPE_RBRACKET)) {
-            struct node *arg = parse_expression();
+        parser_consume_type(state, TOKEN_TYPE_LBRACKET, "(");
+        while (!parser_check_current_type(state, TOKEN_TYPE_RBRACKET)) {
+            struct ast_node *arg = parse_expression(state);
             list_add(&call->children, arg);
-            if (check(TOKEN_TYPE_COMMA)) advance();
+            if (parser_check_current_type(state, TOKEN_TYPE_COMMA)) parser_continue(state);
         }
-        consume(TOKEN_TYPE_RBRACKET, ")");
-        consume(TOKEN_TYPE_SEMICOLON, ";");
+        parser_consume_type(state, TOKEN_TYPE_RBRACKET, ")");
+        parser_consume_type(state, TOKEN_TYPE_SEMICOLON, ";");
         return call;
     }
 
     // пустая инструкция
-    if (check(TOKEN_TYPE_SEMICOLON)) {
-        advance();
-        return make_node(NODE_EMPTY);
+    if (parser_check_current_type(state, TOKEN_TYPE_SEMICOLON)) {
+        parser_continue(state);
+        return ast_node_create(AST_NODE_TYPE_EMPTY);
     }
 
-    fprintf(stderr, "Unknown statement at pos %zu\n", g_pos);
+    fprintf(stderr, "Unknown statement at pos %zu\n", state->index);
     exit(1);
 }
 
 // --- parse expression (упрощённо) ---
-static struct node *parse_expression(void) {
-    if (check(TOKEN_TYPE_INT)) {
-        struct token *t = advance();
-        struct node *n = make_node(NODE_NUMBER);
+static struct ast_node *parse_expression(struct parser_state *state) {
+    if (parser_check_current_type(state, TOKEN_TYPE_INT)) {
+        struct token *t = parser_continue(state);
+        struct ast_node *n = ast_node_create(AST_NODE_TYPE_NUMBER);
         n->int_value = t->value_int;
         return n;
     }
-    if (check(TOKEN_TYPE_STRING)) {
-        struct token *t = advance();
-        struct node *n = make_node(NODE_STRING);
+    if (parser_check_current_type(state, TOKEN_TYPE_STRING)) {
+        struct token *t = parser_continue(state);
+        struct ast_node *n = ast_node_create(AST_NODE_TYPE_STRING);
         n->string_value = t->value_string;
         return n;
     }
-    if (check(TOKEN_TYPE_IDENTIFIER)) {
-        struct token *t = advance();
-        struct node *n = make_node(NODE_VAR_REF);
+    if (parser_check_current_type(state, TOKEN_TYPE_IDENTIFIER)) {
+        struct token *t = parser_continue(state);
+        struct ast_node *n = ast_node_create(AST_NODE_TYPE_VAR_REF);
         n->name = t->value_string;
         return n;
     }
 
-    fprintf(stderr, "Unknown expression at pos %zu\n", g_pos);
+    fprintf(stderr, "Unknown expression at pos %zu\n", state->index);
     exit(1);
-}
-
-// --- utils ---
-
-
-// --- AST utils ---
-static struct node *make_node(enum node_type type) {
-    struct node *n = calloc(1, sizeof(struct node));
-    n->type = type;
-    list_init(&n->children);
-    return n;
-}
-void free_node(struct node *n) {
-    if (!n) return;
-    for (struct list_node *cur = n->children.head; cur; cur = cur->next)
-        free_node((struct node*)cur->data);
-    free(n);
 }

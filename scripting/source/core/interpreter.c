@@ -11,7 +11,7 @@ struct variable {
 
 struct function {
     char *name;
-    struct node *body; // AST-узел функции
+    struct ast_node *body; // AST-узел функции
 };
 
 // глобальное состояние
@@ -36,18 +36,18 @@ static struct function *find_fn(const char *name) {
 }
 
 // --- вычисление выражений ---
-static struct value eval_expr(struct node *n) {
+static struct value eval_expr(struct ast_node *n) {
     struct value v = {0};
     switch (n->type) {
-    case NODE_NUMBER:
+    case AST_NODE_TYPE_NUMBER:
         v.type = VAL_INT;
         v.int_value = n->int_value;
         break;
-    case NODE_STRING:
+    case AST_NODE_TYPE_STRING:
         v.type = VAL_STRING;
         v.string_value = n->string_value;
         break;
-    case NODE_VAR_REF: {
+    case AST_NODE_TYPE_VAR_REF: {
         struct variable *var = find_var(n->name);
         if (!var) {
             fprintf(stderr, "Runtime error: undefined variable %s\n", n->name);
@@ -64,25 +64,25 @@ static struct value eval_expr(struct node *n) {
 }
 
 // --- выполнение инструкции ---
-static struct value exec_stmt(struct node *n) {
+static struct value exec_stmt(struct ast_node *n) {
     struct value ret = {0};
     switch (n->type) {
-    case NODE_RETURN:
-        ret = eval_expr((struct node*)n->children.head->data);
+    case AST_NODE_TYPE_RETURN:
+        ret = eval_expr((struct ast_node*)n->children.head->data);
         return ret;
 
-    case NODE_VAR_DECL: {
+    case AST_NODE_TYPE_VAR_DECL: {
         struct variable *v = malloc(sizeof(*v));
         v->name = n->name;
         if (n->children.count > 0) {
-            struct node *valNode = n->children.head->data;
+            struct ast_node *valNode = n->children.head->data;
             v->val = eval_expr(valNode);
         }
         list_add(g_variables, v);
         break;
     }
 
-    case NODE_CALL: {
+    case AST_NODE_TYPE_CALL: {
         struct function *fn = find_fn(n->name);
         if (fn) {
             // вызов функции (пока без аргументов)
@@ -91,8 +91,8 @@ static struct value exec_stmt(struct node *n) {
         break;
     }
 
-    case NODE_CALL_MODULE: {
-        struct node *callNode = n->children.head->data;
+    case AST_NODE_TYPE_CALL_MODULE: {
+        struct ast_node *callNode = n->children.head->data;
         char *fnName = callNode->name;
 
         // найти модуль
@@ -120,15 +120,15 @@ static struct value exec_stmt(struct node *n) {
 static struct value exec_function(struct function *fn) {
     struct value ret = {0};
     for (struct list_node *cur = fn->body->children.head; cur; cur = cur->next) {
-        ret = exec_stmt((struct node*)cur->data);
-        if (((struct node*)cur->data)->type == NODE_RETURN)
+        ret = exec_stmt((struct ast_node*)cur->data);
+        if (((struct ast_node*)cur->data)->type == AST_NODE_TYPE_RETURN)
             break;
     }
     return ret;
 }
 
 // --- запуск программы ---
-int interpret(struct node *program) {
+int interpret(struct ast_node *program) {
     g_variables = malloc(sizeof(struct list));
     g_functions = malloc(sizeof(struct list));
     list_init(g_variables);
@@ -136,8 +136,8 @@ int interpret(struct node *program) {
 
     // регистрируем функции
     for (struct list_node *cur = program->children.head; cur; cur = cur->next) {
-        struct node *n = cur->data;
-        if (n->type == NODE_FUNCTION) {
+        struct ast_node *n = cur->data;
+        if (n->type == AST_NODE_TYPE_FUNCTION) {
             struct function *f = malloc(sizeof(*f));
             f->name = n->name;
             f->body = n;

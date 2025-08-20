@@ -17,6 +17,6 @@ struct value {
 };
 
 // Главный вызов интерпретатора
-int interpret(struct node *program);
+int interpret(struct ast_node *program);
 
 #endif // INTERPRETER_H

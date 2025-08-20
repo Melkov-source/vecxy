@@ -1,31 +1,27 @@
-﻿//
-// Created by melkov on 20.08.2025.
-//
-
-#ifndef SCRIPTING_AST_H
+﻿#ifndef SCRIPTING_AST_H
 #define SCRIPTING_AST_H
 
 #include "common/list.h"
 
-enum node_type {
-    NODE_PROGRAM,
-    NODE_IMPORT,
-    NODE_IMPORT_MODULE,
-    NODE_CALL_MODULE,
-    NODE_FUNCTION,
-    NODE_RETURN,
-    NODE_VAR_DECL,
-    NODE_CALL,
-    NODE_IF,
-    NODE_BLOCK,
-    NODE_NUMBER,
-    NODE_STRING,
-    NODE_VAR_REF,
-    NODE_EMPTY
+enum ast_node_type {
+    AST_NODE_TYPE_PROGRAM,
+    AST_NODE_TYPE_IMPORT,
+    AST_NODE_TYPE_IMPORT_MODULE,
+    AST_NODE_TYPE_CALL_MODULE,
+    AST_NODE_TYPE_FUNCTION,
+    AST_NODE_TYPE_RETURN,
+    AST_NODE_TYPE_VAR_DECL,
+    AST_NODE_TYPE_CALL,
+    AST_NODE_TYPE_IF,
+    AST_NODE_TYPE_BLOCK,
+    AST_NODE_TYPE_NUMBER,
+    AST_NODE_TYPE_STRING,
+    AST_NODE_TYPE_VAR_REF,
+    AST_NODE_TYPE_EMPTY
 };
 
-struct node {
-    enum node_type type;
+struct ast_node {
+    enum ast_node_type type;
     char *name;
     char *return_type;
 
@@ -35,5 +31,8 @@ struct node {
 
     struct list children;
 };
+
+struct ast_node *ast_node_create(enum ast_node_type type);
+void ast_node_free(struct ast_node *node);
 
 #endif //SCRIPTING_AST_H

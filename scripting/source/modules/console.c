@@ -5,12 +5,12 @@
 
 #include "core/parser.h"
 
-static void console_log(struct node *callNode) {
+static void console_log(struct ast_node *callNode) {
     if (callNode->children.count > 0) {
-        struct node *arg = callNode->children.head->data;
-        if (arg->type == NODE_STRING) {
+        struct ast_node *arg = callNode->children.head->data;
+        if (arg->type == AST_NODE_TYPE_STRING) {
             printf("%s\n", arg->string_value);
-        } else if (arg->type == NODE_NUMBER) {
+        } else if (arg->type == AST_NODE_TYPE_NUMBER) {
             printf("%d\n", arg->int_value);
         } else {
             printf("[Console.Log: unsupported arg]\n");

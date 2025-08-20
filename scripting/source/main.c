@@ -26,7 +26,7 @@ int main(void) {
 
     //print_tokens(tokens);
 
-    struct node *ast = parse(tokens);
+    struct ast_node *ast = parse(tokens);
 
     return interpret(ast);
 }

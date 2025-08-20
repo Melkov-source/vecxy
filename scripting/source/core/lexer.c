@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "core/lexer.h"
-#include "utils/str_utils.h"
+#include "utils/string.h"
 
 struct token *lex_identifier(const char **c);
 struct token *lex_number(const char **c);

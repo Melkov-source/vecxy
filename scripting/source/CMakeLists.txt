@@ -6,6 +6,8 @@
         core/parser.c
         core/token.c
         core/module.c
+        core/ast.c
+        core/interpreter.c
 
         #entities
         core/entities/fn.c
@@ -19,9 +21,6 @@
         #modules
         modules/console.c
         modules/math.c
-
-        core/interpreter.c
-        core/parser_utils.c
 )
 
 add_executable(scripting ${SOURCES})
