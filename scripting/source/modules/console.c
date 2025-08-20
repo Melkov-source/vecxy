@@ -1,40 +1,30 @@
 #include "modules/console.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-void console_log(char *text)
-{
-    printf("[LOG] %s", text);
+#include "core/parser.h"
+
+static void console_log(struct node *callNode) {
+    if (callNode->children.count > 0) {
+        struct node *arg = callNode->children.head->data;
+        if (arg->type == NODE_STRING) {
+            printf("%s\n", arg->string_value);
+        } else if (arg->type == NODE_NUMBER) {
+            printf("%d\n", arg->int_value);
+        } else {
+            printf("[Console.Log: unsupported arg]\n");
+        }
+    }
 }
 
-void console_warn(char *text)
-{
-    printf("[WARN] %s", text);
-}
+struct module *console_module_create() {
+    struct module *m = module_create("Console");
 
-void console_error(char *text)
-{
-    printf("[ERROR] %s", text);
-}
+    struct module_export_entity *logFn = malloc(sizeof(*logFn));
+    logFn->name = strdup("Log");
+    logFn->func = console_log;
 
-struct module *console_module_create()
-{
-    struct module *module = module_create("Console");
-
-    size_t size = sizeof(struct module_export_entity);
-
-    struct module_export_entity *log = malloc(size);
-    log->name = "Log";
-    log->p = console_log;
-    list_add(module->exports, log);
-
-    struct module_export_entity *error = malloc(size);
-    error->name = "Error";
-    error->p = console_error;
-    list_add(module->exports, error);
-
-    struct module_export_entity *warn = malloc(size);
-    warn->name = "Warm";
-    warn->p = console_warn;
-    list_add(module->exports, warn);
-
-    return module;
+    list_add(m->exports, logFn);
+    return m;
 }

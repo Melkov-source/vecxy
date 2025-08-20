@@ -7,6 +7,8 @@
 enum node_type {
     NODE_PROGRAM,
     NODE_IMPORT,
+    NODE_IMPORT_MODULE,
+    NODE_CALL_MODULE,
     NODE_FUNCTION,
     NODE_RETURN,
     NODE_VAR_DECL,

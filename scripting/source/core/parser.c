@@ -15,6 +15,12 @@ static struct token *peek_next(void) {
     if (g_pos + 1 >= g_tokens->count) return NULL;
     return (struct token*)list_get((struct list*)g_tokens, g_pos+1);
 }
+
+static  struct token *peek_back(void) {
+    if (g_pos - 1 <= 0) return NULL;
+    return (struct token*)list_get((struct list*)g_tokens, g_pos - 1);
+}
+
 static int is_at_end(void) { return g_pos >= g_tokens->count; }
 static struct token *advance(void) { return !is_at_end() ? (struct token*)list_get((struct list*)g_tokens, g_pos++) : NULL; }
 static int check(enum token_type type) { struct token *t = peek(); return t && t->type == type; }
@@ -118,6 +124,22 @@ static struct node *parse_statement(void) {
         return decl;
     }
 
+    if (check(TOKEN_TYPE_IDENTIFIER) && peek_next()->type == TOKEN_TYPE_TO) {
+        struct token *module_name = peek();
+        struct node *node_call_module = make_node(NODE_CALL_MODULE);
+        node_call_module->string_value = module_name->value_string;
+
+        advance();
+
+        advance(); // ::
+
+        struct node *node_call = parse_statement();
+
+        list_add(&node_call_module->children, node_call);
+
+        return node_call_module;
+    }
+
     // вызов функции
     if (check(TOKEN_TYPE_IDENTIFIER) && peek_next()->type == TOKEN_TYPE_LBRACKET) {
         struct token *nameTok = advance();
@@ -179,10 +201,25 @@ struct node *parse(const struct list *tokens) {
     while (!is_at_end()) {
         struct token *t = peek();
         if (t->type == TOKEN_TYPE_HASH) {
-            // TODO: parse_import
             advance();
-            struct node *imp = make_node(NODE_IMPORT);
-            list_add(&program->children, imp);
+
+            if (check(TOKEN_TYPE_IDENTIFIER) &&check_kw(KEYWORD_TYPE_IMPORT)) {
+                struct node *node_import = make_node(NODE_IMPORT);
+                advance();
+
+                list_add(&program->children, node_import);
+
+                if (check(TOKEN_TYPE_IDENTIFIER)) {
+                    struct node *node_module = make_node(NODE_IMPORT_MODULE);
+                    const struct token *module_name = advance();
+
+                    node_module->string_value = module_name->value_string;
+
+                    list_add(&node_import->children, node_module);
+
+                    consume(TOKEN_TYPE_SEMICOLON, ";");
+                }
+            }
         }
         else if (t->keyword == KEYWORD_TYPE_FN) {
             struct node *fn = parse_function();

@@ -3,11 +3,12 @@
 #include "core/lexer.h"
 #include "core/parser.h"
 #include "core/module.h"
+#include "core/interpreter.h"
 
 int main(void) {
     modules_init();
-    
-    struct file_info *file = file_load("E:\\Projects\\vecxy\\scripting\\resources\\main.ms");
+
+    struct file_info *file = file_load("D:\\Projects\\vecxy\\scripting\\resources\\Main.ms");
 
     const char *code = file->text;
 
@@ -23,9 +24,9 @@ int main(void) {
         return 1;
     }
 
-    print_tokens(tokens);
+    //print_tokens(tokens);
 
     struct node *ast = parse(tokens);
 
-    return 0;
+    return interpret(ast);
 }

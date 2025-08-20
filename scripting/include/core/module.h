@@ -2,11 +2,14 @@
 #define SCRIPTING_MODULE_H
 
 #include "common/list.h"
+#include "core/parser.h"
+
+extern struct list *modules;
 
 struct module_export_entity
 {
     char *name;
-    void *p;
+    void (*func)(struct node *callNode);
 };
 
 struct module_config
