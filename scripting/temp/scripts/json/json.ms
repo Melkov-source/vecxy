@@ -6,17 +6,17 @@
     parser
 }
 
-pack json {
-    public static fn::string serialize(const pack data) {
+fn::string json_serialize(const pack data) {
         return "";
     }
 
-    public static fn::json deserialize(const string json) {
-        token[] tokens = lexer::lex(json);
+fn::json json_deserialize(const string json) {
+    token[] tokens = lexer::lex(json);
 
-        parser::parse(tokens);
-    }
+    parser::parse(tokens);
+}
 
+pack json {
     public fn::json_value get(string name) {
 
     }
@@ -49,5 +49,7 @@ pack json {
 }
 
 #export {
-    json
+    json,
+    json_serialize,
+    json_deserialize
 }

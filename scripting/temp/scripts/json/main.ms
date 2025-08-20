@@ -4,7 +4,7 @@
     warn
 }
 
-#import "json" {
+#import "./json" {
     json
 }
 

@@ -1,10 +1,12 @@
 {
     "name": "json",
-
-    "scripts": [
-        "./json.ms",
+    
+    "internal": [
         "./lexer.ms",
         "./parser.ms",
         "./token.ms"
+    ],
+    "external": [
+        "./json.ms"
     ]
 }

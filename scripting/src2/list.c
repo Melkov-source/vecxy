@@ -31,7 +31,7 @@ void list_add(struct list *list, void *data) {
 
 void *list_get(struct list *list, size_t index) {
     if (index >= list->count) {
-        return NULL; // индекс вне диапазона
+        return NULL;
     }
 
     struct list_node *current = list->head;

@@ -15,11 +15,14 @@ enum token_type {
 
     TOKEN_TYPE_HASH,
     TOKEN_TYPE_TO,
+    TOKEN_TYPE_USE,
 
     TOKEN_TYPE_LBRACKET,
     TOKEN_TYPE_RBRACKET,
     TOKEN_TYPE_LBRACE,
     TOKEN_TYPE_RBRACE,
+    TOKEN_TYPE_LSQUARE,
+    TOKEN_TYPE_RSQUARE,
 
     TOKEN_TYPE_INT,
     TOKEN_TYPE_FLOAT,
@@ -174,8 +177,20 @@ void print_tokens(struct list **tok) {
                 printf("RBRACE (%s)", token->value_string);
                 break;
 
+            case TOKEN_TYPE_LSQUARE:
+                printf("LSQUARE (%s)", token->value_string);
+                break;
+
+            case TOKEN_TYPE_RSQUARE:
+                printf("RSQUARE (%s)", token->value_string);
+                break;
+
             case TOKEN_TYPE_INT:
                 printf("INT (%d)", token->value_int);
+                break;
+
+            case TOKEN_TYPE_STRING:
+                printf("STRING (%s)", token->value_string);
                 break;
 
             case token_type_semicolon:
@@ -185,6 +200,14 @@ void print_tokens(struct list **tok) {
             case token_type_comma:
                 printf("COMMA (,)");
                 break;
+
+            case TOKEN_TYPE_USE:
+                printf("USE (:)");
+                break;
+
+            case token_type_assign:
+                printf("ASSIGN (=)");
+                break;;
 
             default:
                 printf("UNKNOWN (%s)", token->value_string ? token->value_string : "null");
@@ -262,6 +285,51 @@ struct token *lex_number(const char **c) {
     return tok;
 }
 
+struct token *lex_string(const char **c) {
+    (*c)++; // пропускаем открывающую кавычку
+    const char *start = *c;
+
+    char *buffer = malloc(1024); // временный буфер
+    size_t len = 0;
+
+    while (**c && **c != '"') {
+        if (**c == '\\') {
+            (*c)++;
+            if (!**c) break;
+
+            switch (**c) {
+                case 'n': buffer[len++] = '\n'; break;
+                case 't': buffer[len++] = '\t'; break;
+                case '"': buffer[len++] = '"';  break;
+                case '\\': buffer[len++] = '\\'; break;
+                default: buffer[len++] = **c; break;
+            }
+        } else {
+            buffer[len++] = **c;
+        }
+        (*c)++;
+    }
+
+    if (**c != '"') {
+        free(buffer);
+        fprintf(stderr, "Unterminated string literal\n");
+        return NULL;
+    }
+
+    (*c)++; // пропускаем закрывающую кавычку
+
+    buffer[len] = '\0';
+    char *final_str = strdup(buffer);
+    free(buffer);
+
+    struct token *tok = malloc(sizeof(struct token));
+    tok->type = TOKEN_TYPE_STRING;
+    tok->identifier = identifier_type_none;
+    tok->keyword = keyword_type_none;
+    tok->value_string = final_str;
+
+    return tok;
+}
 
 struct list *lex(const char *code) {
     struct list *tokens = malloc(sizeof(struct list));
@@ -275,6 +343,11 @@ struct list *lex(const char *code) {
         }
 
         if (isspace(*c)) {
+            c++;
+            continue;
+        }
+
+        if (*c == ' ') {
             c++;
             continue;
         }
@@ -339,6 +412,24 @@ struct list *lex(const char *code) {
             continue;
         }
 
+        if (*c == '[') {
+            struct token *token = malloc(sizeof(struct token));
+            token->type = TOKEN_TYPE_LSQUARE;
+            token->value_string = strndup(c, 1);
+            list_add(tokens, token);
+            c++;
+            continue;
+        }
+
+        if (*c == ']') {
+            struct token *token = malloc(sizeof(struct token));
+            token->type = TOKEN_TYPE_RSQUARE;
+            token->value_string = strndup(c, 1);
+            list_add(tokens, token);
+            c++;
+            continue;
+        }
+
         if (*c == ';') {
             struct token *token = malloc(sizeof(struct token));
             token->type = token_type_semicolon;
@@ -359,13 +450,43 @@ struct list *lex(const char *code) {
 
         if (*c == ':') {
             c++;
+
             if (*c == ':') {
                 struct token *token = malloc(sizeof(struct token));
                 token->type = TOKEN_TYPE_TO;
                 token->value_string = strndup("::", 2);
                 list_add(tokens, token);
                 c++;
+            } else {
+                struct token *token = malloc(sizeof(struct token));
+                token->type = TOKEN_TYPE_USE;
+                token->value_string = strndup(":", 1);
+                list_add(tokens, token);
             }
+
+            continue;
+        }
+
+        if (*c == '"') {
+            struct token *token = lex_string(&c);
+            if (token == NULL) return NULL; // ошибка: незакрытая строка
+            list_add(tokens, token);
+            continue;
+        }
+
+        if (*c == '=') {
+            c++;
+
+            struct token *token = malloc(sizeof(struct token));
+
+            if (token == NULL) {
+                return NULL;
+            }
+
+            token->type = token_type_assign;
+            token->value_string = strndup(c, 1);
+
+            list_add(tokens, token);
             continue;
         }
 
