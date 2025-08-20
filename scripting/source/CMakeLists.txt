@@ -19,7 +19,9 @@
         #modules
         modules/console.c
         modules/math.c
+
         core/interpreter.c
+        core/parser_utils.c
 )
 
 add_executable(scripting ${SOURCES})
