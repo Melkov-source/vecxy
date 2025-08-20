@@ -1,5 +1,6 @@
 ﻿#include "file.h"
 #include "lexer.h"
+#include "parser.h"
 
 int main(void) {
     struct file_info *file = file_load("E:\\Projects\\vecxy\\scripting\\temp\\scripts\\main.ms");
@@ -18,7 +19,9 @@ int main(void) {
         return 1;
     }
 
-    print_tokens(&tokens);
+    print_tokens(tokens);
+
+    struct node *ast = parse(tokens);
 
     return 0;
 }

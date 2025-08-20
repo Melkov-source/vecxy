@@ -51,6 +51,7 @@ enum keyword_type {
 
     KEYWORD_TYPE_IMPORT,
     KEYWORD_TYPE_EXPORT,
+    KEYWORD_TYPE_MODULE,
 
     KEYWORD_TYPE_PACK,
     KEYWORD_TYPE_MIX,
@@ -90,7 +91,7 @@ struct token {
     bool value_bool;
 };
 
-void print_tokens(struct list **tok);
+void print_tokens(struct list *tok);
 enum keyword_type identifier_to_keyword_type(const char *ident);
 
 #endif //SCRIPTING_TOKEN_H

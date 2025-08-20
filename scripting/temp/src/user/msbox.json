@@ -1,0 +1,13 @@
+{
+  "name": "User",
+  
+  "scripts": [
+    "./User.ms", 
+    "./UserController.ms",
+    "./Utils.ms"
+  ],
+
+  "boxes": [
+
+  ]
+}

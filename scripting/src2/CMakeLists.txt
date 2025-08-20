@@ -10,4 +10,6 @@
         lexer.h
         ast.h
         str_utils.h
+        parser.c
+        parser.h
 )

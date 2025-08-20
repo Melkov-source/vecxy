@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "parser.h": "c",
+        "cstdlib": "c",
+        "stdlib.h": "c",
+        "pack.h": "c",
+        "scope.h": "c",
+        "bit": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "type_traits": "cpp",
+        "cmath": "cpp",
+        "limits": "cpp",
+        "new": "cpp",
+        "stdio.h": "c",
+        "str_utils.h": "c",
+        "lexer.h": "c",
+        "text_encoding": "c",
+        "typeinfo": "c",
+        "module.h": "c"
+    }
+}

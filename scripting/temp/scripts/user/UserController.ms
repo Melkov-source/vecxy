@@ -1,6 +1,0 @@
-
-#module User {
-    pack Controller {
-
-    }
-}

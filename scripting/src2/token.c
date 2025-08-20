@@ -15,6 +15,7 @@ enum keyword_type identifier_to_keyword_type(const char *ident) {
 
     if (strcmp(ident, "import") == 0) return KEYWORD_TYPE_IMPORT;
     if (strcmp(ident, "export") == 0) return KEYWORD_TYPE_EXPORT;
+    if(strcmp(ident, "module") == 0) return KEYWORD_TYPE_MODULE;
 
     if (strcmp(ident, "pack") == 0) return KEYWORD_TYPE_PACK;
     if (strcmp(ident, "mix") == 0) return KEYWORD_TYPE_MIX;
@@ -45,8 +46,8 @@ enum keyword_type identifier_to_keyword_type(const char *ident) {
     return KEYWORD_TYPE_NONE;
 }
 
-void print_tokens(struct list **tok) {
-    struct list *tokens = *tok;
+void print_tokens(struct list *tok) {
+    struct list *tokens = tok;
 
     for (size_t i = 0; i < tokens->count; i++) {
         const struct token *token = list_get(tokens, i);
