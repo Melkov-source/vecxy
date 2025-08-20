@@ -6,8 +6,8 @@
 #include "core/parser.h"
 
 static void console_log(struct ast_node *callNode) {
-    if (callNode->children.count > 0) {
-        struct ast_node *arg = callNode->children.head->data;
+    if (callNode->children->count > 0) {
+        struct ast_node *arg = callNode->children->head->data;
         if (arg->type == AST_NODE_TYPE_STRING) {
             printf("%s\n", arg->string_value);
         } else if (arg->type == AST_NODE_TYPE_NUMBER) {

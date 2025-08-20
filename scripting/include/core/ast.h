@@ -23,13 +23,14 @@ enum ast_node_type {
 struct ast_node {
     enum ast_node_type type;
     char *name;
+    struct list *parameters;
     char *return_type;
 
     int int_value;
     float float_value;
     char *string_value;
 
-    struct list children;
+    struct list *children;
 };
 
 struct ast_node *ast_node_create(enum ast_node_type type);

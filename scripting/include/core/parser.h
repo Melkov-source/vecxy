@@ -3,11 +3,12 @@
 
 #include "core/ast.h"
 
-struct parser_state {
+struct parser {
     const struct list *tokens;
+    const struct ast_node *ast;
     size_t index;
 };
 
-struct ast_node *parse(const struct list *tokens);
+const struct ast_node *parser_parse(const struct list *tokens);
 
 #endif // SCRIPTING_PARSER_H

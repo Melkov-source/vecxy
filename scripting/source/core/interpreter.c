@@ -68,14 +68,14 @@ static struct value exec_stmt(struct ast_node *n) {
     struct value ret = {0};
     switch (n->type) {
     case AST_NODE_TYPE_RETURN:
-        ret = eval_expr((struct ast_node*)n->children.head->data);
+        ret = eval_expr((struct ast_node*)n->children->head->data);
         return ret;
 
     case AST_NODE_TYPE_VAR_DECL: {
         struct variable *v = malloc(sizeof(*v));
         v->name = n->name;
-        if (n->children.count > 0) {
-            struct ast_node *valNode = n->children.head->data;
+        if (n->children->count > 0) {
+            struct ast_node *valNode = n->children->head->data;
             v->val = eval_expr(valNode);
         }
         list_add(g_variables, v);
@@ -92,7 +92,7 @@ static struct value exec_stmt(struct ast_node *n) {
     }
 
     case AST_NODE_TYPE_CALL_MODULE: {
-        struct ast_node *callNode = n->children.head->data;
+        struct ast_node *callNode = n->children->head->data;
         char *fnName = callNode->name;
 
         // найти модуль
@@ -119,7 +119,7 @@ static struct value exec_stmt(struct ast_node *n) {
 // --- выполнение функции ---
 static struct value exec_function(struct function *fn) {
     struct value ret = {0};
-    for (struct list_node *cur = fn->body->children.head; cur; cur = cur->next) {
+    for (struct list_node *cur = fn->body->children->head; cur; cur = cur->next) {
         ret = exec_stmt((struct ast_node*)cur->data);
         if (((struct ast_node*)cur->data)->type == AST_NODE_TYPE_RETURN)
             break;
@@ -135,7 +135,7 @@ int interpret(struct ast_node *program) {
     list_init(g_functions);
 
     // регистрируем функции
-    for (struct list_node *cur = program->children.head; cur; cur = cur->next) {
+    for (struct list_node *cur = program->children->head; cur; cur = cur->next) {
         struct ast_node *n = cur->data;
         if (n->type == AST_NODE_TYPE_FUNCTION) {
             struct function *f = malloc(sizeof(*f));
