@@ -2,6 +2,7 @@
 #define SCRIPTING_AST_H
 
 #include "common/list.h"
+#include "core/entities/var.h"
 
 enum ast_node_type {
     AST_NODE_TYPE_PROGRAM,
@@ -22,9 +23,9 @@ enum ast_node_type {
 
 struct ast_node {
     enum ast_node_type type;
-    char *name;
+    const char *name;
     struct list *parameters;
-    char *return_type;
+    enum var_type return_type;
 
     int int_value;
     float float_value;

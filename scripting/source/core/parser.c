@@ -59,24 +59,24 @@ static void parse_attribute(struct parser *parser) {
     }
 }
 
-static char *parse_function_return_type(struct parser *parser) {
+static enum var_type parse_function_return_type(struct parser *parser) {
     parser_consume_type(parser, TOKEN_TYPE_TO, "'::' or 'to'");
 
     const struct token *current = parser_get_current(parser);
 
-    char *return_type = NULL;
+    enum var_type return_type = VAR_TYPE_UNDEFINED;
 
     switch (current->keyword) {
         case KEYWORD_TYPE_INT:
-            return_type = "int";
+            return_type = VAR_TYPE_INT;
             parser_continue(parser);
             break;
         case KEYWORD_TYPE_STRING:
-            return_type = "string";
+            return_type = VAR_TYPE_STRING;
             parser_continue(parser);
             break;
         default:
-            return_type = "auto";
+            return_type = VAR_TYPE_UNDEFINED;
             break;
     }
 
@@ -124,7 +124,7 @@ static void parse_function(struct parser *parser) {
 
     parser_consume_keyword(parser, KEYWORD_TYPE_FN, "fn");
 
-    char *return_type = parse_function_return_type(parser);
+    const enum var_type return_type = parse_function_return_type(parser);
     char *function_name = parse_function_name(parser);
     struct list *parameters = parse_function_parameters(parser);
 
@@ -139,6 +139,7 @@ static void parse_function(struct parser *parser) {
 }
 
 static struct ast_node *parse_return(struct parser *parser) {
+    // return X;
     if (parser_check_keyword(parser, KEYWORD_TYPE_RETURN) == false) {
         return NULL;
     }
@@ -155,9 +156,67 @@ static struct ast_node *parse_return(struct parser *parser) {
     return return_node;
 }
 
+static enum var_type parse_variable_type(struct parser *parser) {
+    const struct token *keyword = parser_continue(parser);
+
+    enum var_type variable_type = VAR_TYPE_UNDEFINED;
+
+    switch (keyword->keyword) {
+        case KEYWORD_TYPE_INT:
+            variable_type = VAR_TYPE_INT;
+            break;
+        case KEYWORD_TYPE_STRING:
+            variable_type = VAR_TYPE_STRING;
+            break;
+        case KEYWORD_TYPE_FLOAT:
+            variable_type = VAR_TYPE_FLOAT;
+            break;
+        default:
+            variable_type = VAR_TYPE_UNDEFINED;
+            break;
+    }
+
+    return variable_type;
+}
+
+static char *parse_variable_name(struct parser *parser) {
+    const struct token *name = parser_consume_type(parser, TOKEN_TYPE_IDENTIFIER, "identifier");
+
+    return name->value_string;
+}
+
+static struct ast_node *parse_variable(struct parser *parser) {
+    // int x = 5;
+
+    const bool is_variable = parser_check_keyword(parser, KEYWORD_TYPE_INT) ||
+                             parser_check_keyword(parser, KEYWORD_TYPE_STRING) ||
+                             parser_check_keyword(parser, KEYWORD_TYPE_FLOAT);
+
+    if (is_variable == false) {
+        return NULL;
+    }
+
+    const enum var_type variable_type = parse_variable_type(parser);
+    const char *variable_name = parse_variable_name(parser);
+
+    struct ast_node *decl = ast_node_create(AST_NODE_TYPE_VAR_DECL);
+    decl->name = variable_name;
+    decl->return_type = variable_type;
+
+    if (parser_check_current_type(parser, TOKEN_TYPE_ASSIGN)) {
+        parser_continue(parser);
+        struct ast_node *val = parse_expression(parser);
+        list_add(decl->children, val);
+    }
+
+    parser_consume_type(parser, TOKEN_TYPE_SEMICOLON, ";");
+    return decl;
+}
+
 // --- parse statement ---
 static struct ast_node *parse_statement(struct parser *parser) {
     const parser_func parse_functions[] = {
+        parse_variable,
         parse_return
     };
 
@@ -176,26 +235,6 @@ static struct ast_node *parse_statement(struct parser *parser) {
     }
 
     return NULL;
-
-    // int x = 5;
-    if (parser_check_keyword(parser, KEYWORD_TYPE_INT) || parser_check_keyword(parser, KEYWORD_TYPE_STRING)) {
-        struct token *kw = parser_continue(parser);
-        char *type = kw->keyword == KEYWORD_TYPE_INT ? "int" : "string";
-        struct token *nameTok = parser_consume_type(parser, TOKEN_TYPE_IDENTIFIER, "identifier");
-
-        struct ast_node *decl = ast_node_create(AST_NODE_TYPE_VAR_DECL);
-        decl->name = nameTok->value_string;
-        decl->return_type = type;
-
-        if (parser_check_current_type(parser, TOKEN_TYPE_ASSIGN)) {
-            parser_continue(parser);
-            struct ast_node *val = parse_expression(parser);
-            list_add(decl->children, val);
-        }
-
-        parser_consume_type(parser, TOKEN_TYPE_SEMICOLON, ";");
-        return decl;
-    }
 
     if (parser_check_current_type(parser, TOKEN_TYPE_IDENTIFIER) && parser_get_next(parser)->type == TOKEN_TYPE_TO) {
         const struct token *module_name = parser_get_current(parser);

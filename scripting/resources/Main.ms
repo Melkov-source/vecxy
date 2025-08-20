@@ -3,5 +3,7 @@
 fn::int Main() {
     Console::Log("Hello World");
 
-    return 10;
+    int age = 50;
+
+    return age;
 }

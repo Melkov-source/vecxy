@@ -3,6 +3,8 @@
 
 enum var_type
 {
+    VAR_TYPE_UNDEFINED,
+
     VAR_TYPE_INT,
     VAR_TYPE_FLOAT,
     VAR_TYPE_STRING,
