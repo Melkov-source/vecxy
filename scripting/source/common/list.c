@@ -10,6 +10,18 @@ void list_init(struct list *list) {
     list_default(list);
 }
 
+struct list *list_create() {
+    struct list *list = malloc(sizeof(struct list));
+
+    if (list == NULL) {
+        return NULL;
+    }
+
+    list_init(list);
+
+    return list;
+}
+
 void list_add(struct list *list, void *data) {
     const size_t list_node_size = sizeof(struct list_node);
 
