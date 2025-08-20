@@ -4,4 +4,10 @@
         file.h
         list.c
         list.h
+        token.h
+        token.c
+        lexer.c
+        lexer.h
+        ast.h
+        str_utils.h
 )
