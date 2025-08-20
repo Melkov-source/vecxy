@@ -1,8 +1,11 @@
 ﻿#include "file.h"
 #include "lexer.h"
 #include "parser.h"
+#include "module.h"
 
 int main(void) {
+    modules_init();
+    
     struct file_info *file = file_load("E:\\Projects\\vecxy\\scripting\\resources\\main.ms");
 
     const char *code = file->text;

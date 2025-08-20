@@ -1,4 +1,6 @@
-#include "module.h"
+#include <stdio.h>
+
+#include "core/module.h"
 
 void console_log(char *text);
 void console_warn(char *text);

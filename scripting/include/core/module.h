@@ -23,5 +23,6 @@ struct module
 
 struct module *module_create(char *name);
 void module_free(struct module *module);
+void modules_init();
 
 #endif // SCRIPTING_MODULE_H

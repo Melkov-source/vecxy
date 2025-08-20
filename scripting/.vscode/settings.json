@@ -20,6 +20,10 @@
         "module.h": "c",
         "console.h": "c",
         "math.h": "c",
-        "file.h": "c"
+        "file.h": "c",
+        "math_module.h": "c",
+        "console_module.h": "c",
+        "modules_manager.h": "c",
+        "list.h": "c"
     }
 }
