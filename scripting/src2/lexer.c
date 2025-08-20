@@ -35,8 +35,8 @@ struct list *lex(const char *code) {
         if (*c == '#') {
             struct token *token = malloc(sizeof(struct token));
             token->type = TOKEN_TYPE_HASH;
-            token->identifier = identifier_type_none;
-            token->keyword = keyword_type_none;
+            token->identifier = IDENTIFIER_TYPE_NONE;
+            token->keyword = KEYWORD_TYPE_NONE;
             token->value_string = strndup(c, 1);
 
             list_add(tokens, token);
@@ -112,7 +112,7 @@ struct list *lex(const char *code) {
 
         if (*c == ';') {
             struct token *token = malloc(sizeof(struct token));
-            token->type = token_type_semicolon;
+            token->type = TOKEN_TYPE_SEMICOLON;
             token->value_string = strndup(c, 1);
             list_add(tokens, token);
             c++;
@@ -121,7 +121,7 @@ struct list *lex(const char *code) {
 
         if (*c == ',') {
             struct token *token = malloc(sizeof(struct token));
-            token->type = token_type_comma;
+            token->type = TOKEN_TYPE_COMMA;
             token->value_string = strndup(c, 1);
             list_add(tokens, token);
             c++;
@@ -163,7 +163,7 @@ struct list *lex(const char *code) {
                 return NULL;
             }
 
-            token->type = token_type_assign;
+            token->type = TOKEN_TYPE_ASSIGN;
             token->value_string = strndup(c, 1);
 
             list_add(tokens, token);
@@ -193,9 +193,9 @@ struct token *lex_identifier(const char **c) {
     tok->type = TOKEN_TYPE_IDENTIFIER;
     tok->value_string = ident;
     tok->keyword = kw;
-    tok->identifier = (kw != keyword_type_none)
-                          ? identifier_type_keyword
-                          : identifier_type_name;
+    tok->identifier = (kw != KEYWORD_TYPE_NONE)
+                          ? IDENTIFIER_TYPE_KEYWORD
+                          : IDENTIFIER_TYPE_NAME;
 
     return tok;
 }
@@ -214,8 +214,8 @@ struct token *lex_number(const char **c) {
     tok->type = TOKEN_TYPE_INT;
     tok->value_string = num;
     tok->value_int = atoi(num);
-    tok->identifier = identifier_type_none;
-    tok->keyword = keyword_type_none;
+    tok->identifier = IDENTIFIER_TYPE_NONE;
+    tok->keyword = KEYWORD_TYPE_NONE;
 
     return tok;
 }
@@ -259,8 +259,8 @@ struct token *lex_string(const char **c) {
 
     struct token *tok = malloc(sizeof(struct token));
     tok->type = TOKEN_TYPE_STRING;
-    tok->identifier = identifier_type_none;
-    tok->keyword = keyword_type_none;
+    tok->identifier = IDENTIFIER_TYPE_NONE;
+    tok->keyword = KEYWORD_TYPE_NONE;
     tok->value_string = final_str;
 
     return tok;

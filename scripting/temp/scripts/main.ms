@@ -1,32 +1,25 @@
-#import console;
+#Import Console;
+#Import User;
 
-#import json to {
-    json,
-    json_serialize,
-    json_deserialize
-    #json
-};
 
-#json
-pack user {
-    public int age;
-    public string name;
-    public string username;
-
-    public pack::ctor(string username) {
-        pack:username = username;
-    }
-}
-
-fn::int main(string[] args) {
-    auto petya = user::ctor("Petya2000_xyz")
+fn::int Main(string[] Args) {
+    auto petya = new User::Model("Petya2000_xyz")
     {
-        age = 25,
-        name = "Petya"
+        Age = 25,
+        Name = "Petya"
     };
 
-    console::log("Hello World");
-    auto name = console::input("Enter name: ");
+    auto controller = new User::Controller(petya);
+
+    Console::Log("Hello World");
+    auto name = Console::Input("Enter name: ");
+
+    if(petya:age > 18) {
+        console::log("Petya is Man! age: ", petya:age);
+    } else {
+        console::log("Petya is Boy! age: ", petya:age);
+    }
 
     return 0;
 }
+

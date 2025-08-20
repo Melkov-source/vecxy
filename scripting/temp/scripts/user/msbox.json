@@ -1,0 +1,8 @@
+{
+  "scripts": [
+    "./lexer.ms", 
+    "./parser.ms", 
+    "./token.ms", 
+    "./json.ms"
+  ]
+}

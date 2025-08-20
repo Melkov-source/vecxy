@@ -4,45 +4,45 @@
 #include <string.h>
 
 enum keyword_type identifier_to_keyword_type(const char *ident) {
-    if (strcmp(ident, "main") == 0) return keyword_type_main;
-    if (strcmp(ident, "fn") == 0) return keyword_type_fn;
-    if (strcmp(ident, "return") == 0) return keyword_type_return;
+    if (strcmp(ident, "main") == 0) return KEYWORD_TYPE_MAIN;
+    if (strcmp(ident, "fn") == 0) return KEYWORD_TYPE_FN;
+    if (strcmp(ident, "return") == 0) return KEYWORD_TYPE_RETURN;
 
-    if (strcmp(ident, "int") == 0) return keyword_type_int;
-    if (strcmp(ident, "float") == 0) return keyword_type_float;
-    if (strcmp(ident, "string") == 0) return keyword_type_string;
-    if (strcmp(ident, "null") == 0) return keyword_type_null;
+    if (strcmp(ident, "int") == 0) return KEYWORD_TYPE_INT;
+    if (strcmp(ident, "float") == 0) return KEYWORD_TYPE_FLOAT;
+    if (strcmp(ident, "string") == 0) return KEYWORD_TYPE_STRING;
+    if (strcmp(ident, "null") == 0) return KEYWORD_TYPE_NULL;
 
-    if (strcmp(ident, "import") == 0) return keyword_type_import;
-    if (strcmp(ident, "export") == 0) return keyword_type_export;
+    if (strcmp(ident, "import") == 0) return KEYWORD_TYPE_IMPORT;
+    if (strcmp(ident, "export") == 0) return KEYWORD_TYPE_EXPORT;
 
-    if (strcmp(ident, "pack") == 0) return keyword_type_pack;
-    if (strcmp(ident, "mix") == 0) return keyword_type_mix;
-    if (strcmp(ident, "kind") == 0) return keyword_type_kind;
+    if (strcmp(ident, "pack") == 0) return KEYWORD_TYPE_PACK;
+    if (strcmp(ident, "mix") == 0) return KEYWORD_TYPE_MIX;
+    if (strcmp(ident, "kind") == 0) return KEYWORD_TYPE_KIND;
 
-    if (strcmp(ident, "new") == 0) return keyword_type_new;
-    if (strcmp(ident, "ctor") == 0) return keyword_type_ctor;
-    if (strcmp(ident, "lock") == 0) return keyword_type_lock;
+    if (strcmp(ident, "new") == 0) return KEYWORD_TYPE_NEW;
+    if (strcmp(ident, "ctor") == 0) return KEYWORD_TYPE_CTOR;
+    if (strcmp(ident, "lock") == 0) return KEYWORD_TYPE_LOCK;
 
-    if (strcmp(ident, "public") == 0) return keyword_type_public;
-    if (strcmp(ident, "private") == 0) return keyword_type_private;
-    if (strcmp(ident, "protected") == 0) return keyword_type_protected;
-    if (strcmp(ident, "static") == 0) return keyword_type_static;
-    if (strcmp(ident, "const") == 0) return keyword_type_const;
+    if (strcmp(ident, "public") == 0) return KEYWORD_TYPE_PUBLIC;
+    if (strcmp(ident, "private") == 0) return KEYWORD_TYPE_PRIVATE;
+    if (strcmp(ident, "protected") == 0) return KEYWORD_TYPE_PROTECTED;
+    if (strcmp(ident, "static") == 0) return KEYWORD_TYPE_STATIC;
+    if (strcmp(ident, "const") == 0) return KEYWORD_TYPE_CONST;
 
-    if (strcmp(ident, "add") == 0) return keyword_type_add;
-    if (strcmp(ident, "is") == 0) return keyword_type_is;
-    if (strcmp(ident, "to") == 0) return keyword_type_to;
-    if (strcmp(ident, "of") == 0) return keyword_type_of;
+    if (strcmp(ident, "add") == 0) return KEYWORD_TYPE_ADD;
+    if (strcmp(ident, "is") == 0) return KEYWORD_TYPE_IS;
+    if (strcmp(ident, "to") == 0) return KEYWORD_TYPE_TO;
+    if (strcmp(ident, "of") == 0) return KEYWORD_TYPE_OF;
 
-    if (strcmp(ident, "for") == 0) return keyword_type_for;
-    if (strcmp(ident, "while") == 0) return keyword_type_while;
-    if (strcmp(ident, "do") == 0) return keyword_type_do;
+    if (strcmp(ident, "for") == 0) return KEYWORD_TYPE_FOR;
+    if (strcmp(ident, "while") == 0) return KEYWORD_TYPE_WHILE;
+    if (strcmp(ident, "do") == 0) return KEYWORD_TYPE_DO;
 
-    if (strcmp(ident, "break") == 0) return keyword_type_break;
-    if (strcmp(ident, "continue") == 0) return keyword_type_continue;
+    if (strcmp(ident, "break") == 0) return KEYWORD_TYPE_BREAK;
+    if (strcmp(ident, "continue") == 0) return KEYWORD_TYPE_CONTINUE;
 
-    return keyword_type_none;
+    return KEYWORD_TYPE_NONE;
 }
 
 void print_tokens(struct list **tok) {
@@ -56,7 +56,7 @@ void print_tokens(struct list **tok) {
         switch (token->type) {
             case TOKEN_TYPE_IDENTIFIER:
                 printf("IDENTIFIER (%s)", token->value_string);
-                if (token->identifier == identifier_type_keyword) {
+                if (token->identifier == IDENTIFIER_TYPE_KEYWORD) {
                     printf(" [keyword]");
                 }
                 break;
@@ -101,11 +101,11 @@ void print_tokens(struct list **tok) {
                 printf("STRING (%s)", token->value_string);
                 break;
 
-            case token_type_semicolon:
+            case TOKEN_TYPE_SEMICOLON:
                 printf("SEMICOLON (;)");
                 break;
 
-            case token_type_comma:
+            case TOKEN_TYPE_COMMA:
                 printf("COMMA (,)");
                 break;
 
@@ -113,7 +113,7 @@ void print_tokens(struct list **tok) {
                 printf("USE (:)");
                 break;
 
-            case token_type_assign:
+            case TOKEN_TYPE_ASSIGN:
                 printf("ASSIGN (=)");
                 break;;
 

@@ -24,59 +24,59 @@ enum token_type {
     TOKEN_TYPE_STRING,
     TOKEN_TYPE_BOOL,
 
-    token_type_assign,
+    TOKEN_TYPE_ASSIGN,
 
-    token_type_semicolon,
-    token_type_comma,
+    TOKEN_TYPE_SEMICOLON,
+    TOKEN_TYPE_COMMA,
 };
 
 enum identifier_type {
-    identifier_type_none = 0,
+    IDENTIFIER_TYPE_NONE = 0,
 
-    identifier_type_name,
-    identifier_type_keyword,
+    IDENTIFIER_TYPE_NAME,
+    IDENTIFIER_TYPE_KEYWORD,
 };
 
 enum keyword_type {
-    keyword_type_none = 0,
+    KEYWORD_TYPE_NONE = 0,
 
-    keyword_type_main,
-    keyword_type_fn,
-    keyword_type_return,
+    KEYWORD_TYPE_MAIN,
+    KEYWORD_TYPE_FN,
+    KEYWORD_TYPE_RETURN,
 
-    keyword_type_int,
-    keyword_type_float,
-    keyword_type_string,
-    keyword_type_null,
+    KEYWORD_TYPE_INT,
+    KEYWORD_TYPE_FLOAT,
+    KEYWORD_TYPE_STRING,
+    KEYWORD_TYPE_NULL,
 
-    keyword_type_import,
-    keyword_type_export,
+    KEYWORD_TYPE_IMPORT,
+    KEYWORD_TYPE_EXPORT,
 
-    keyword_type_pack,
-    keyword_type_mix,
-    keyword_type_kind,
+    KEYWORD_TYPE_PACK,
+    KEYWORD_TYPE_MIX,
+    KEYWORD_TYPE_KIND,
 
-    keyword_type_new,
-    keyword_type_ctor,
-    keyword_type_lock,
+    KEYWORD_TYPE_NEW,
+    KEYWORD_TYPE_CTOR,
+    KEYWORD_TYPE_LOCK,
 
-    keyword_type_public,
-    keyword_type_private,
-    keyword_type_protected,
-    keyword_type_static,
-    keyword_type_const,
+    KEYWORD_TYPE_PUBLIC,
+    KEYWORD_TYPE_PRIVATE,
+    KEYWORD_TYPE_PROTECTED,
+    KEYWORD_TYPE_STATIC,
+    KEYWORD_TYPE_CONST,
 
-    keyword_type_add,
-    keyword_type_is,
-    keyword_type_to,
-    keyword_type_of,
+    KEYWORD_TYPE_ADD,
+    KEYWORD_TYPE_IS,
+    KEYWORD_TYPE_TO,
+    KEYWORD_TYPE_OF,
 
-    keyword_type_for,
-    keyword_type_while,
-    keyword_type_do,
+    KEYWORD_TYPE_FOR,
+    KEYWORD_TYPE_WHILE,
+    KEYWORD_TYPE_DO,
 
-    keyword_type_break,
-    keyword_type_continue,
+    KEYWORD_TYPE_BREAK,
+    KEYWORD_TYPE_CONTINUE,
 };
 
 struct token {
