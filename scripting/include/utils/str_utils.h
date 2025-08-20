@@ -1,8 +1,4 @@
-﻿//
-// Created by melkov on 20.08.2025.
-//
-
-#ifndef SCRIPTING_STR_UTILS_H
+﻿#ifndef SCRIPTING_STR_UTILS_H
 #define SCRIPTING_STR_UTILS_H
 
 #include <stddef.h>

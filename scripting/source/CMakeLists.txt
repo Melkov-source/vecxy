@@ -1,6 +1,16 @@
 ﻿set(SOURCES
     main.c
-    test.c
+
+    core/lexer.c
+    core/parser.c
+    core/token.c
+
+    core/entities/fn.c
+    core/entities/pack.c
+    core/entities/scope.c
+
+    common/file.c
+    common/list.c
 )
 
 add_executable(scripting ${SOURCES})

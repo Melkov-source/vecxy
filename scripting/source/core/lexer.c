@@ -1,9 +1,5 @@
-﻿//
-// Created by melkov on 20.08.2025.
-//
-
-#include "lexer.h"
-#include "str_utils.h"
+﻿#include "lexer.h"
+#include "utils/str_utils.h"
 #include <ctype.h>
 #include <stdio.h>
 
