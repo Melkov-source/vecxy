@@ -1,23 +1,21 @@
 #import Console;
 
-fn::string Test2() {
-    Console::Log("Test2");
+fn::int Tester() {
+    Console::Log("Tester2");
+
+    return 8;
 }
 
-fn::string Test() {
+fn::int Test() {
     Console::Log("Test");
 
-    return "Test Result";
+    int t = Tester();
+
+    return t;
 }
 
-fn::string Main() {
-    Test();
+fn::int Main() {
+    int c = Test();
 
-    string test = Test();
-
-    Console::Log("Hello World");
-
-    Test();
-
-    return test;
+    return c;
 }
