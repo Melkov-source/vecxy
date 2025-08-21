@@ -4,13 +4,16 @@
 #include "var.h"
 
 struct fn {
-    char *name;
+    const char *name;
     struct var *parameters;
     enum var_type return_type;
+    struct ast_node *ast;
 
-    struct scope *scope;
+    const struct scope *scope;
 };
 
-struct fn *fn_create();
+
+struct var *fn_invoke(const struct fn *fn);
+struct fn *fn_create(const struct scope *fn_scope, struct ast_node *ast);
 
 #endif // SCRIPTING_FN_H

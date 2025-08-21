@@ -11,8 +11,6 @@ fn::int Main() {
 
     Console::Log("Hello World");
 
-    int age = 50;
-
     Test();
     Test();
 

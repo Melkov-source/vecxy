@@ -125,7 +125,7 @@ static void parse_function(struct parser *parser) {
     parser_consume_keyword(parser, KEYWORD_TYPE_FN, "fn");
 
     const enum var_type return_type = parse_function_return_type(parser);
-    char *function_name = parse_function_name(parser);
+    const char *function_name = parse_function_name(parser);
     struct list *parameters = parse_function_parameters(parser);
 
     struct ast_node *function = ast_node_create(AST_NODE_TYPE_FUNCTION);
@@ -288,7 +288,6 @@ static struct ast_node *parse_empty(struct parser *parser) {
     return empty;
 }
 
-// --- parse statement ---
 static struct ast_node *parse_statement(struct parser *parser) {
     const parser_func parse_functions[] = {
         parse_variable,
@@ -315,28 +314,36 @@ static struct ast_node *parse_statement(struct parser *parser) {
         return node;
     }
 
-    fprintf(stderr, "Unknown statement at pos %zu\n", parser->index);
-    exit(1);
+    printf("Unknown statement at pos %zu\n", parser->index);
+
+    return NULL;
 }
 
-// --- parse expression (упрощённо) ---
 static struct ast_node *parse_expression(struct parser *state) {
     if (parser_check_current_type(state, TOKEN_TYPE_INT)) {
-        struct token *t = parser_continue(state);
+        const struct token *token = parser_continue(state);
+
         struct ast_node *n = ast_node_create(AST_NODE_TYPE_NUMBER);
-        n->int_value = t->value_int;
+        n->int_value = token->value_int;
+
         return n;
     }
+
     if (parser_check_current_type(state, TOKEN_TYPE_STRING)) {
         struct token *t = parser_continue(state);
+
         struct ast_node *n = ast_node_create(AST_NODE_TYPE_STRING);
         n->string_value = t->value_string;
+
         return n;
     }
+
     if (parser_check_current_type(state, TOKEN_TYPE_IDENTIFIER)) {
-        struct token *t = parser_continue(state);
+        const struct token *token = parser_continue(state);
+
         struct ast_node *n = ast_node_create(AST_NODE_TYPE_VAR_REF);
-        n->name = t->value_string;
+        n->name = token->value_string;
+
         return n;
     }
 
