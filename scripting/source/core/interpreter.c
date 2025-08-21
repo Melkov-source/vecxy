@@ -18,6 +18,8 @@ struct function {
 static struct list *g_variables;
 static struct list *g_functions;
 
+static struct value exec_function(struct function *fn);
+
 // --- поиск ---
 static struct variable *find_var(const char *name) {
     for (size_t i = 0; i < g_variables->count; i++) {
@@ -85,8 +87,7 @@ static struct value exec_stmt(struct ast_node *n) {
     case AST_NODE_TYPE_CALL: {
         struct function *fn = find_fn(n->name);
         if (fn) {
-            // вызов функции (пока без аргументов)
-            ret = exec_stmt(fn->body);
+            ret = exec_function(fn);
         }
         break;
     }
@@ -119,11 +120,14 @@ static struct value exec_stmt(struct ast_node *n) {
 // --- выполнение функции ---
 static struct value exec_function(struct function *fn) {
     struct value ret = {0};
+
     for (struct list_node *cur = fn->body->children->head; cur; cur = cur->next) {
         ret = exec_stmt((struct ast_node*)cur->data);
+
         if (((struct ast_node*)cur->data)->type == AST_NODE_TYPE_RETURN)
             break;
     }
+
     return ret;
 }
 
