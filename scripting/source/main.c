@@ -8,7 +8,7 @@
 int main(void) {
     modules_init();
 
-    struct file_info *file = file_load("E:\\Projects\\vecxy\\scripting\\resources\\Main.ms");
+    struct file_info *file = file_load("D:\\Projects\\vecxy\\scripting\\resources\\Main.ms");
 
     const char *code = file->text;
 
