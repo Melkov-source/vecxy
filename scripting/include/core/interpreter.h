@@ -4,6 +4,6 @@
 #include "core/parser.h"
 #include "core/module.h"
 
-int interpret(const struct ast_node *program);
+union var_value *interpret(const struct ast_node *program);
 
 #endif // INTERPRETER_H

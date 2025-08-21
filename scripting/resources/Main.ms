@@ -1,18 +1,23 @@
 #import Console;
 
-fn::int Test() {
-    Console::Log("Test");
-
-    return 0;
+fn::string Test2() {
+    Console::Log("Test2");
 }
 
-fn::int Main() {
+fn::string Test() {
+    Console::Log("Test");
+
+    return "Test Result";
+}
+
+fn::string Main() {
     Test();
+
+    string test = Test();
 
     Console::Log("Hello World");
 
     Test();
-    Test();
 
-    return age;
+    return test;
 }

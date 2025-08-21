@@ -7,7 +7,7 @@ const struct var *scope_get_var(const struct scope *scope, const char *var_name)
     for (int index = 0; index < scope->variables->count; index++) {
         const struct var *var = list_get(scope->variables, index);
 
-        if (var->name == var_name) {
+        if (*var->name == *var_name) {
             return var;
         }
     }

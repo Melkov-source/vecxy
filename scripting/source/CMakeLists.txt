@@ -21,6 +21,7 @@
         #modules
         modules/console.c
         modules/math.c
+        core/entities/var.c
 )
 
 add_executable(scripting ${SOURCES})

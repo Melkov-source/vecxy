@@ -11,19 +11,22 @@ enum ast_node_type {
     AST_NODE_TYPE_CALL_MODULE,
     AST_NODE_TYPE_FUNCTION,
     AST_NODE_TYPE_RETURN,
+
     AST_NODE_TYPE_VAR_DECL,
+    AST_NODE_TYPE_VAR_REF,
+    AST_NODE_TYPE_VAR_FN,
+
     AST_NODE_TYPE_CALL,
     AST_NODE_TYPE_IF,
     AST_NODE_TYPE_BLOCK,
     AST_NODE_TYPE_NUMBER,
     AST_NODE_TYPE_STRING,
-    AST_NODE_TYPE_VAR_REF,
     AST_NODE_TYPE_EMPTY
 };
 
 struct ast_node {
     enum ast_node_type type;
-    const char *name;
+    char *name;
     struct list *parameters;
     enum var_type return_type;
 

@@ -209,7 +209,10 @@ static struct ast_node *parse_variable(struct parser *parser) {
         list_add(decl->children, val);
     }
 
-    parser_consume_type(parser, TOKEN_TYPE_SEMICOLON, ";");
+    if (parser_check_current_type(parser, TOKEN_TYPE_SEMICOLON)) {
+        parser_continue(parser);
+    }
+
     return decl;
 }
 
@@ -339,10 +342,22 @@ static struct ast_node *parse_expression(struct parser *state) {
     }
 
     if (parser_check_current_type(state, TOKEN_TYPE_IDENTIFIER)) {
-        const struct token *token = parser_continue(state);
+        const struct token *name_token = parser_get_current(state);
+
+        if (parser_get_next(state)->type == TOKEN_TYPE_LBRACKET) {
+            struct ast_node *fn = parse_func_invoke(state);
+
+            if (fn == NULL) {
+                fn = parse_module_fun_invoke(state);
+            }
+
+            return fn;
+        }
+
+        parser_continue(state);
 
         struct ast_node *n = ast_node_create(AST_NODE_TYPE_VAR_REF);
-        n->name = token->value_string;
+        n->name = name_token->value_string;
 
         return n;
     }

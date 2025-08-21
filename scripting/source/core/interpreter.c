@@ -19,7 +19,7 @@ static void initialize_global_scope(struct scope *g_scope) {
     }
 }
 
-int interpret(const struct ast_node *program) {
+union var_value *interpret(const struct ast_node *program) {
     struct scope *g_scope = scope_create(NULL);
     g_scope->ast = program;
     initialize_global_scope(g_scope);
@@ -28,12 +28,15 @@ int interpret(const struct ast_node *program) {
 
     if (main == NULL) {
         fprintf(stderr, "Runtime error: No fn::int Main(...) function\n");
-        return 1;
+        union var_value *var = malloc(sizeof(union var_value));
+        var->i = 1;
+
+        return var;
     }
 
-    struct var *result = fn_invoke(main);
+    const struct var *result = fn_invoke(main);
 
     scope_free(g_scope);
 
-    return result->value->i;
+    return result->value;
 }

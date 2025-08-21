@@ -16,13 +16,21 @@ static union var_value *fn_return_value(const struct fn *fn, const struct ast_no
         case AST_NODE_TYPE_NUMBER:
             result->i = n->int_value;
             break;
+
         case AST_NODE_TYPE_STRING:
             result->s = n->string_value;
             break;
+
         case AST_NODE_TYPE_VAR_REF: {
             const struct var *var = scope_get_var(fn->scope, n->name);
 
-            result->pack = var->value->pack;
+            if (fn->return_type == VAR_TYPE_INT) {
+                result->i = var->value->i;
+            } else if (fn->return_type == VAR_TYPE_STRING) {
+                result->s = var->value->s;
+            }
+
+
             break;
         }
 
@@ -46,6 +54,41 @@ struct var *fn_invoke(const struct fn *fn) {
             case AST_NODE_TYPE_RETURN: {
                 result->value = fn_return_value(fn, ast->children->head->data);
                 return result;
+            }
+
+            case AST_NODE_TYPE_VAR_DECL: {
+                struct var *var = malloc(sizeof(*var));
+                var->type = ast->return_type;
+                var->name = ast->name;
+                var->value = malloc(sizeof(union var_value));
+
+                for (int index = 0; index < ast->children->count; index++) {
+                    struct ast_node *node = list_get(ast->children, index);
+
+                    if (node->type == AST_NODE_TYPE_NUMBER) {
+                        var->value->i = node->int_value;
+                    }
+
+                    if (node->type == AST_NODE_TYPE_STRING) {
+                        var->value->s = node->string_value;
+                    }
+
+                    if (node->type == AST_NODE_TYPE_CALL) {
+                         const struct fn *fn_call = scope_get_fn(fn->scope, node->name);
+
+                        const struct var *result_fn = fn_invoke(fn_call);
+
+                        if (var->type == VAR_TYPE_INT) {
+                            var->value->i = result_fn->value->i;
+                        } else if (var->type == VAR_TYPE_STRING) {
+                            var->value->s = result_fn->value->s;
+                        }
+                    }
+                }
+
+                list_add(fn->scope->variables, var);
+
+                break;
             }
 
             case AST_NODE_TYPE_CALL: {
@@ -89,6 +132,7 @@ struct fn *fn_create(const struct scope *fn_scope, struct ast_node *ast) {
     struct fn *fn = malloc(sizeof(struct fn));
 
     fn->name = ast->name;
+    fn->return_type = ast->return_type;
     fn->ast = ast;
     fn->scope = fn_scope;
 

@@ -1,4 +1,6 @@
-﻿#include "common/file.h"
+﻿#include <stdio.h>
+
+#include "common/file.h"
 
 #include "core/lexer.h"
 #include "core/parser.h"
@@ -28,5 +30,7 @@ int main(void) {
 
     const struct ast_node *ast = parser_parse(tokens);
 
-    return interpret(ast);
+    printf("%s", interpret(ast)->s);
+
+    return 0;
 }
