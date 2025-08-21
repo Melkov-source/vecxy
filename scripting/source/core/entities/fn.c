@@ -74,7 +74,10 @@ struct var *fn_invoke(const struct fn *fn) {
                     }
 
                     if (node->type == AST_NODE_TYPE_CALL) {
-                         const struct fn *fn_call = scope_get_fn(fn->scope, node->name);
+                        struct fn *fn_call = scope_get_fn(fn->scope, node->name);
+
+                        list_add(fn_call->parameters, node->children->head);
+
 
                         const struct var *result_fn = fn_invoke(fn_call);
 
@@ -111,7 +114,7 @@ struct var *fn_invoke(const struct fn *fn) {
                             const struct module_export_entity *exp = list_get(m->exports, j);
 
                             if (strcmp(exp->name, fn_name) == 0) {
-                                exp->func(callNode);
+                                exp->func(fn->scope, callNode);
                             }
                         }
                     }
@@ -135,6 +138,7 @@ struct fn *fn_create(const struct scope *fn_scope, struct ast_node *ast) {
     fn->return_type = ast->return_type;
     fn->ast = ast;
     fn->scope = fn_scope;
+    fn->parameters = list_create();
 
     return fn;
 }

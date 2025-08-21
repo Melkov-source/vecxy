@@ -16,8 +16,8 @@ struct scope
     const struct ast_node *ast;
 };
 
-const struct var *scope_get_var(const struct scope *scope, const char *var_name);
-const struct  fn *scope_get_fn(const struct scope *scope, const char *fn_name);
+struct var *scope_get_var(const struct scope *scope, const char *var_name);
+struct  fn *scope_get_fn(const struct scope *scope, const char *fn_name);
 
 struct scope *scope_create(struct scope *parent);
 void scope_free(struct scope *scope);

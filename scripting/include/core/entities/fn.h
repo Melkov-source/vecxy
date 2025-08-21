@@ -1,11 +1,12 @@
 #ifndef SCRIPTING_FN_H
 #define SCRIPTING_FN_H
 
-#include "var.h"
+#include "core/entities/var.h"
+#include "common/list.h"
 
 struct fn {
     const char *name;
-    struct var *parameters;
+    struct list *parameters;
     enum var_type return_type;
     struct ast_node *ast;
 

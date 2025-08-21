@@ -4,15 +4,24 @@
 #include <string.h>
 
 #include "core/parser.h"
+#include "core/entities/scope.h"
 
-static void console_log(struct ast_node *callNode) {
+static void console_log(struct scope *scope, struct ast_node *callNode) {
     if (callNode->children->count > 0) {
         struct ast_node *arg = callNode->children->head->data;
         if (arg->type == AST_NODE_TYPE_STRING) {
             printf("%s\n", arg->string_value);
         } else if (arg->type == AST_NODE_TYPE_NUMBER) {
             printf("%d\n", arg->int_value);
-        } else {
+        } else if (arg->type == AST_NODE_TYPE_VAR_REF) {
+            const struct  var *var = scope_get_var(scope, arg->name);
+
+            if (var->type == VAR_TYPE_INT) {
+                printf("%d\n", var->value->i);
+            } else if (var->type == VAR_TYPE_STRING) {
+                printf("%s\n", var->value->s);
+            }
+        }else {
             printf("[Console.Log: unsupported arg]\n");
         }
     }

@@ -5,9 +5,9 @@
 #include "common/list.h"
 #include "core/entities/fn.h"
 
-const struct var *scope_get_var(const struct scope *scope, const char *var_name) {
+struct var *scope_get_var(const struct scope *scope, const char *var_name) {
     for (int index = 0; index < scope->variables->count; index++) {
-        const struct var *var = list_get(scope->variables, index);
+        struct var *var = list_get(scope->variables, index);
 
         if (strcmp(var->name, var_name) == 0) {
             return var;
@@ -15,7 +15,7 @@ const struct var *scope_get_var(const struct scope *scope, const char *var_name)
     }
 
     if (scope->parent != NULL) {
-        const struct var *prnt_var = scope_get_var(scope->parent, var_name);
+        struct var *prnt_var = scope_get_var(scope->parent, var_name);
 
         return prnt_var;
     }
@@ -23,9 +23,9 @@ const struct var *scope_get_var(const struct scope *scope, const char *var_name)
     return NULL;
 }
 
-const struct fn *scope_get_fn(const struct scope *scope, const char *fn_name) {
+struct fn *scope_get_fn(const struct scope *scope, const char *fn_name) {
     for (int index = 0; index < scope->functions->count; index++) {
-        const struct fn *fn = list_get(scope->functions, index);
+        struct fn *fn = list_get(scope->functions, index);
 
         if (strcmp(fn->name, fn_name) == 0) {
             return fn;

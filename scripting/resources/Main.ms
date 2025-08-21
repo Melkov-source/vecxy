@@ -3,13 +3,17 @@
 fn::int Tester() {
     Console::Log("Tester2");
 
-    return 8;
+    int var = 10;
+
+    Console::Log(var);
+
+    return var;
 }
 
 fn::int Test() {
-    Console::Log("Test");
-
     int t = Tester();
+
+    Console::Log(t);
 
     return t;
 }
