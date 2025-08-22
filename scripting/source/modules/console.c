@@ -3,26 +3,37 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "core/parser.h"
-#include "core/entities/scope.h"
+#include "../../include/core/scope.h"
 
-static void console_log(struct scope *scope, struct ast_node *callNode) {
-    if (callNode->children->count > 0) {
-        struct ast_node *arg = callNode->children->head->data;
-        if (arg->type == AST_NODE_TYPE_STRING) {
-            printf("%s\n", arg->string_value);
-        } else if (arg->type == AST_NODE_TYPE_NUMBER) {
-            printf("%d\n", arg->int_value);
-        } else if (arg->type == AST_NODE_TYPE_VAR_REF) {
-            const struct  var *var = scope_get_var(scope, arg->name);
+static void console_log(const struct scope *scope, const struct ast_node *ast) {
+    if (ast->children->count > 0) {
+        const struct ast_node *parameter = ast->children->head->data;
 
-            if (var->type == VAR_TYPE_INT) {
-                printf("%d\n", var->value->i);
-            } else if (var->type == VAR_TYPE_STRING) {
-                printf("%s\n", var->value->s);
+        switch (parameter->type) {
+            case AST_NODE_TYPE_STRING: {
+                printf("%s\n", parameter->string_value);
+                break;
             }
-        }else {
-            printf("[Console.Log: unsupported arg]\n");
+
+            case AST_NODE_TYPE_NUMBER: {
+                printf("%d\n", parameter->int_value);
+                break;
+            }
+
+            case AST_NODE_TYPE_VAR_REF: {
+                const struct  var *var = scope_get_var(scope, parameter->name);
+
+                if (var->type == VAR_TYPE_INT) {
+                    printf("%d\n", var->value->i);
+                } else if (var->type == VAR_TYPE_STRING) {
+                    printf("%s\n", var->value->s);
+                }
+                break;
+            }
+
+            default:
+                printf("[Console.Log: unsupported arg]\n");
+                break;
         }
     }
 }

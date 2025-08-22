@@ -2,7 +2,7 @@
 #define SCRIPTING_AST_H
 
 #include "common/list.h"
-#include "core/entities/var.h"
+#include "var.h"
 
 enum ast_node_type {
     AST_NODE_TYPE_PROGRAM,

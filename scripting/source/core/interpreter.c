@@ -1,10 +1,9 @@
-﻿#include "core/interpreter.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+﻿#include <stdio.h>
+#include <stdlib.h
 
-#include "core/entities/scope.h"
-#include "core/entities/fn.h"
+#include "core/interpreter.h"
+#include "core/scope.h"
+#include "core/fn.h"
 
 static void initialize_global_scope(struct scope *g_scope) {
     for (const struct list_node *current = g_scope->ast->children->head; current; current = current->next) {

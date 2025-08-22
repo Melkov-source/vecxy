@@ -1,9 +1,8 @@
-#include "core/entities/scope.h"
-
 #include <string.h>
 
 #include "common/list.h"
-#include "core/entities/fn.h"
+#include "core/scope.h"
+#include "core/fn.h"
 
 struct var *scope_get_var(const struct scope *scope, const char *var_name) {
     for (int index = 0; index < scope->variables->count; index++) {

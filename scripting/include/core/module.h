@@ -9,7 +9,7 @@ extern struct list *modules;
 struct module_export_entity {
     char *name;
 
-    void (*func)(struct scope *scope, struct ast_node *callNode);
+    void (*func)(const struct scope *scope, const struct ast_node *callNode);
 };
 
 struct module_config {

@@ -8,11 +8,13 @@
         core/module.c
         core/ast.c
         core/interpreter.c
+        core/var.c
+        core/runtime.c
 
         #entities
-        core/entities/fn.c
-        core/entities/pack.c
-        core/entities/scope.c
+        core/fn.c
+        core/pack.c
+        core/scope.c
 
         #common
         common/file.c
@@ -21,7 +23,7 @@
         #modules
         modules/console.c
         modules/math.c
-        core/entities/var.c
+        core/environment.c
 )
 
 add_executable(scripting ${SOURCES})

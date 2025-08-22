@@ -1,25 +1,9 @@
-#import Console;
+import Console;
 
-fn::int Tester() {
-    Console::Log("Tester2");
+pack Program {
+    public int Main() {
+        Log("Hello World!");
 
-    int var = 10;
-
-    Console::Log(var);
-
-    return var;
-}
-
-fn::int Test() {
-    int t = Tester();
-
-    Console::Log(t);
-
-    return t;
-}
-
-fn::int Main() {
-    int c = Test();
-
-    return c;
+        return 0;
+    }
 }

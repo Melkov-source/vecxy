@@ -1,13 +1,11 @@
 #include <stdlib.h>
-
-#include "core/entities/fn.h"
-
 #include <stdio.h>
 #include <string.h>
 
 #include "core/ast.h"
 #include "core/module.h"
-#include "core/entities/scope.h"
+#include "core/scope.h"
+#include "core/fn.h"
 
 static union var_value *fn_return_value(const struct fn *fn, const struct ast_node *n) {
     union var_value *result = malloc(sizeof(*result));
