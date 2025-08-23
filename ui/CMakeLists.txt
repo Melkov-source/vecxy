@@ -4,5 +4,7 @@ project(ui C)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+add_subdirectory(../clib clib_build)
+
 add_subdirectory(include)
 add_subdirectory(source)

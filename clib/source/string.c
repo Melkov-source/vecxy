@@ -49,12 +49,22 @@ void string_free_heap(struct string* string) {
 }
 
 
-void string_set(struct string *string, const char *text, const size_t text_lenght) {
-    if (text_lenght > 0) {
-        for (size_t i = 0; i < text_lenght; i++) {
+void string_set(struct string *string, const char *text, size_t text_length) {
+    if (text_length > 0) {
+        char *new_value = realloc(string->value, text_length);
+
+        if (new_value) {
+            string->value = new_value;
+        } else {
+            if (text_length > string->length) {
+                text_length = string->length;
+            }
+        }
+
+        for (size_t i = 0; i < text_length; i++) {
             string->value[i] = text[i];
         }
     }
 
-    string->length = text_lenght;
+    string->length = text_length;
 }
