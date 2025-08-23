@@ -1,7 +1,7 @@
 ﻿#include <stdio.h>
 #include <string.h>
 
-#include "common/file.h"
+#include "io/file.h"
 
 static char *dup_str(const char *s) {
     char *d = malloc(strlen(s) + 1);

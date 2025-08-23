@@ -1,4 +1,4 @@
-﻿#include "common/list.h"
+﻿#include "collections/list.h"
 
 void list_default(struct list *list) {
     list->head = NULL;
