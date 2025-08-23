@@ -1,9 +1,9 @@
-#import Console;
+import Console;
 
-fn::int Main() {
-    Console::Log("Hello World");
+pack Program {
+    public int Main() {
+        Log("Hello World!");
 
-    int age = 50;
-
-    return age;
+        return 0;
+    }
 }

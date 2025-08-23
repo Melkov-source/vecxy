@@ -1,5 +1,4 @@
 ﻿#include "core/ast.h"
-#include "core/parser.h"
 
 struct ast_node *ast_node_create(const enum ast_node_type type) {
     struct ast_node *node = calloc(1, sizeof(struct ast_node));

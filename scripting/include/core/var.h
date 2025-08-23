@@ -5,6 +5,8 @@ enum var_type
 {
     VAR_TYPE_UNDEFINED,
 
+    VAR_TYPE_VOID,
+
     VAR_TYPE_INT,
     VAR_TYPE_FLOAT,
     VAR_TYPE_STRING,
@@ -29,7 +31,7 @@ struct var
 {
     char *name;
     enum var_type type;
-    union var_value value;
+    union var_value *value;
 };
 
 

@@ -1,0 +1,3 @@
+﻿fn::void HelloWorld() {
+
+}

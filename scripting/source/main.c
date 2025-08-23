@@ -1,4 +1,6 @@
-﻿#include "common/file.h"
+﻿#include <stdio.h>
+
+#include "common/file.h"
 
 #include "core/lexer.h"
 #include "core/parser.h"
@@ -8,7 +10,7 @@
 int main(void) {
     modules_init();
 
-    struct file_info *file = file_load("E:\\Projects\\vecxy\\scripting\\resources\\Main.ms");
+    struct file_info *file = file_load("D:\\Projects\\vecxy\\scripting\\resources\\Main.ms");
 
     const char *code = file->text;
 
@@ -24,9 +26,11 @@ int main(void) {
         return 1;
     }
 
-    //print_tokens(tokens);
+    print_tokens(tokens);
 
-    struct ast_node *ast = parser_parse(tokens);
+    const struct ast_node *ast = parser_parse(tokens);
 
-    return interpret(ast);
+    printf("%s", interpret(ast)->s);
+
+    return 0;
 }
