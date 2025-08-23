@@ -16,10 +16,6 @@
         core/pack.c
         core/scope.c
 
-        #common
-        common/file.c
-        common/list.c
-
         #modules
         modules/console.c
         modules/math.c
@@ -27,5 +23,7 @@
 )
 
 add_executable(scripting ${SOURCES})
+
+target_link_libraries(scripting PRIVATE clib)
 
 target_link_libraries(scripting PRIVATE scripting_include)

@@ -1,5 +1,5 @@
 ﻿#include <stdio.h>
-#include <stdlib.h
+#include <stdlib.h>
 
 #include "core/interpreter.h"
 #include "core/scope.h"

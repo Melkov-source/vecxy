@@ -1,7 +1,8 @@
 ﻿#ifndef SCRIPTING_TOKEN_H
 #define SCRIPTING_TOKEN_H
 
-#include "common/list.h"
+#include "io/file.h"
+#include "collections/list.h"
 #include "stdbool.h"
 
 enum token_type {

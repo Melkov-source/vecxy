@@ -6,7 +6,7 @@
 
 #include "core/parser.h"
 #include "core/token.h"
-#include "common/list.h"
+#include "collections/list.h"
 
 static bool parser_is_end(const struct parser *parser) {
     return parser->index >= parser->tokens->count;

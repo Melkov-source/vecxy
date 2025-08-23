@@ -1,7 +1,7 @@
 ﻿#ifndef SCRIPTING_AST_H
 #define SCRIPTING_AST_H
 
-#include "common/list.h"
+#include "collections/list.h"
 #include "var.h"
 
 enum ast_node_type {

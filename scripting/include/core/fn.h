@@ -1,8 +1,8 @@
 #ifndef SCRIPTING_FN_H
 #define SCRIPTING_FN_H
 
-#include "core/entities/var.h"
-#include "common/list.h"
+#include "core/var.h"
+#include "collections/list.h"
 
 struct fn {
     const char *name;

@@ -1,7 +1,7 @@
 #ifndef SCRIPTING_MODULE_H
 #define SCRIPTING_MODULE_H
 
-#include "common/list.h"
+#include "collections/list.h"
 #include "core/parser.h"
 
 extern struct list *modules;

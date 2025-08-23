@@ -1,16 +1,21 @@
 ﻿#include <stdio.h>
 
-#include "common/file.h"
+#include "io/file.h"
 
 #include "core/lexer.h"
 #include "core/parser.h"
 #include "core/module.h"
 #include "core/interpreter.h"
 
+#include "string.h"
+
 int main(void) {
     modules_init();
 
-    struct file_info *file = file_load("D:\\Projects\\vecxy\\scripting\\resources\\Main.ms");
+    struct string path = string_create(20);
+    string_set(&path, "E:\\Projects\\vecxy\\scripting\\resources\\Main.ms", 50);
+
+    struct file_info *file = file_load(path.value);
 
     const char *code = file->text;
 

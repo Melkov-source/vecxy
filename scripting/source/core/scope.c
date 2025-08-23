@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "common/list.h"
+#include "collections/list.h"
 #include "core/scope.h"
 #include "core/fn.h"
 
